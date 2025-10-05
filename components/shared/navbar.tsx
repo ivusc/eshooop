@@ -4,7 +4,7 @@ import Link from 'next/link'
 import React from 'react'
 import { Button } from '../ui/button'
 import { navLinks } from '@/lib/constants'
-import { redirect } from 'next/navigation'
+import LogoutForm from '../forms/logout-form'
 
 
 export default async function Navbar() {
@@ -17,25 +17,22 @@ export default async function Navbar() {
       </Link>
       <div className='hidden md:flex flex-row items-center space-x-4'>
         {navLinks.map((link) => (
-          <Link href={link.link} scroll={false} key={link.label} className='flex flex-row items-center justify-center space-x-4 dark:hover:bg-primary/50 rounded-md p-2 '>
-            <p className='font-bold'>{link.label}</p>
+          <Link href={link.link} scroll={false} key={link.label} className='flex flex-row items-center justify-center space-x-4 hover:underline rounded-md p-2 '>
+            <p className='font-medium'>{link.label}</p>
           </Link>
         ))}
         {session !== null ? (
           <>
+            <Link href='/cart' className='flex flex-row items-center justify-center space-x-4 hover:underline rounded-md p-2'>
+              <p className='font-medium'>Cart</p>
+            </Link>
             <div className='flex flex-row justify-between items-center space-x-4 hover:bg-accent p-2 rounded-md cursor-pointer'>
               <Link href='/profile' className='flex flex-row'>
                 <User />
-                <p>{session.name}</p>
+                <p>{session.username}</p>
               </Link>
             </div>
-            <form action={async()=>{
-              "use server";
-              await logout();
-              redirect("/");
-            }}>
-              <Button>Logout</Button>
-            </form>
+            <LogoutForm />
           </>
           ) : (
             <Link href='/login'>

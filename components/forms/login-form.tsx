@@ -1,59 +1,99 @@
-'use client'
-import { handleLogin } from '@/actions/auth-form.actions';
-import Link from 'next/link';
-import React, { useActionState } from 'react'
-import { Button } from '../ui/button';
+"use client";
+import Link from "next/link";
+import React from "react";
+import { Button } from "../ui/button";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { loginUser } from "@/actions/auth.actions";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+const loginSchema = z.object({
+  email: z.email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters" }),
+});
 
 export default function LoginForm() {
-  const [state, formAction] = useActionState(handleLogin, { success: false });
-  console.log(state)
+  const router = useRouter();
+
+  //Define Form
+  const loginForm = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  //Submit function
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    console.log(values);
+    const res = await loginUser(values.email, values.password);
+    if (res.success) {
+      toast.success("Logged in successfully!", { className: "bg-green-500" });
+      router.push("/");
+    } else {
+      toast.error(res.message);
+    }
+  }
+
   return (
-    <form action={formAction} className="space-y-4">
-      <div>
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium text-white mb-1"
-        >
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
+    <Form {...loginForm}>
+      <form onSubmit={loginForm.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={loginForm.control}
           name="email"
-          placeholder="Enter your email"
-          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your email" type="email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        {state?.errors?.email && <p style={{ color: 'red' }}>{state.errors.email}</p>}
-      </div>
-
-      <div>
-        <label
-          htmlFor="password"
-          className="block text-sm font-medium text-white mb-1"
-        >
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
+        <FormField
+          control={loginForm.control}
           name="password"
-          placeholder="Enter your password"
-          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter your password"
+                  type="password"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        {state?.errors?.password && <p style={{ color: 'red' }}>{state.errors.password}</p>}
-        <Link href='/forgot-password'>
-          <p className='text-xs my-2 hover:text-blue-600 hover:underline'>Forgot password?</p>
+        <Link href="/forgot-password">
+          <p className="text-xs my-2 hover:text-blue-600 hover:underline">
+            Forgot password?
+          </p>
         </Link>
-      </div>
-
-      <Button
-        type="submit"
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
-      >
-        Sign In
-      </Button>
-    </form>
-  )
+        <Button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Sign In
+        </Button>
+      </form>
+    </Form>
+  );
 }

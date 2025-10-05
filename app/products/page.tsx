@@ -7,7 +7,7 @@ export default async function ProductsPage() {
   const products = await getProducts();
 
   return (
-    <main className="p-8 mx-24">
+    <main className="p-8 mx-72">
       <h1 className="text-3xl font-bold mb-6">Products</h1>
 
       <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

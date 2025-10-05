@@ -6,7 +6,7 @@ export default async function Home() {
   
   return (
     <div className="">
-      <pre>{session?.name}: {session?.email}</pre>
+      <pre>{session?.username}: {session?.email}</pre>
     </div>
   );
 }

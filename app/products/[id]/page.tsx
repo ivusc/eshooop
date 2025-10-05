@@ -1,10 +1,23 @@
+import { getSession } from '@/actions/auth.actions';
+import { addToCart } from '@/actions/cart.actions';
 import { getProduct } from '@/actions/product.action';
+import { getUser } from '@/actions/user.actions';
+import { Button } from '@/components/ui/button';
+import { revalidatePath } from 'next/cache';
 import Image from 'next/image';
 import React from 'react'
+import { toast } from 'sonner';
 
 export default async function ProductPage({ params } : { params: { id: string }}) {
   const { id } = await params;
   const product = await getProduct(id);
+  const session = await getSession();
+  const user = await getUser(session.email);
+
+  async function handleAdd() {
+    "use server"
+    await addToCart(user._id, product._id, 1);
+  }
 
   return (
     <main className="p-8 max-w-4xl mx-auto">
@@ -31,9 +44,11 @@ export default async function ProductPage({ params } : { params: { id: string }}
           <p className="text-gray-700 mb-6">{product.description}</p>
 
           <div className="flex items-center gap-4">
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
-              Add to Cart
-            </button>
+            <form action={handleAdd}>
+              <Button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                Add to Cart
+              </Button>
+            </form>
             <span className="text-gray-500">Stock: {product.stock}</span>
           </div>
         </div>

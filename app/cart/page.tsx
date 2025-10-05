@@ -1,0 +1,86 @@
+import { getCart, addToCart, removeFromCart } from "@/actions/cart.actions";
+import { revalidatePath } from "next/cache";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getSession } from "@/actions/auth.actions";
+import { getUser } from "@/actions/user.actions";
+import { redirect } from "next/navigation";
+
+export default async function CartPage() {
+  const session = await getSession();
+  const user = await getUser(session.email);
+
+  if (!user) redirect('/');
+
+  const cart = await getCart(user._id);
+
+  if (!cart || cart.items.length === 0)
+    return (
+      <main className="flex min-h-[70vh] flex-col items-center justify-center gap-4">
+        <p className="text-gray-500">🛒 Your cart is empty</p>
+      </main>
+    );
+
+  return (
+    <main className="max-w-3xl mx-auto p-6 space-y-6">
+      <h1 className="text-3xl font-bold mb-4">Your Cart</h1>
+
+      {cart.items.map((item: any) => (
+        <CartItem key={item.product._id} userId={cart.user} item={item} />
+      ))}
+
+      <Card className="p-4 mt-6">
+        <CardHeader>
+          <CardTitle className="text-xl">Total</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-lg font-semibold">${cart.totalPrice.toFixed(2)}</p>
+        </CardContent>
+      </Card>
+    </main>
+  );
+}
+
+async function CartItem({ userId, item }: { userId: string; item: any }) {
+  async function handleRemove() {
+    "use server";
+    await removeFromCart(userId, item.product._id);
+    revalidatePath("/cart");
+  }
+
+  async function handleAdd() {
+    "use server";
+    await addToCart(userId, item.product._id, 1);
+    revalidatePath("/cart");
+  }
+
+  return (
+    <Card className="flex items-center justify-between p-4 shadow-sm">
+      <div className="flex items-center gap-4">
+        <img
+          src={item.product.images?.[0] || "/placeholder.png"}
+          alt={item.product.name}
+          className="w-20 h-20 object-cover rounded-md"
+        />
+        <div>
+          <h2 className="font-semibold">{item.product.name}</h2>
+          <p className="text-sm text-gray-500">${item.product.price}</p>
+          <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <form action={handleAdd}>
+          <Button type="submit" size="sm" variant="outline">
+            +
+          </Button>
+        </form>
+        <form action={handleRemove}>
+          <Button type="submit" size="sm" variant="destructive">
+            -
+          </Button>
+        </form>
+      </div>
+    </Card>
+  );
+}

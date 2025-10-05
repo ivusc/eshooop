@@ -1,19 +1,22 @@
 "use server";
 
+import { sendResetEmail } from "@/lib/mailer";
 import { connectToDatabase } from "@/lib/mongodb";
-import { decrypt, encrypt } from "@/lib/utils";
+import { decrypt, encrypt, randomBytesToHex } from "@/lib/utils";
+import { PasswordResetToken } from "@/models/ResetToken";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
+
 export async function registerUser(
-  name: string,
+  username: string,
   email: string,
   password: string
 ) {
   await connectToDatabase();
-  console.log(name, email, password);
+  console.log(username, email, password);
 
   //find existing user
   const existingUser = await User.findOne({ email });
@@ -23,11 +26,11 @@ export async function registerUser(
 
   //add new user to db
   const hashedPassword = await bcrypt.hash(password, 10);
-  const user = await User.create({ name, email, password: hashedPassword });
+  const user = await User.create({ username, email, password: hashedPassword });
   console.log(user);
 
   //create session
-  const session = await encrypt({ email: user.email, name: user.name });
+  const session = await encrypt({ email: user.email, username: user.username });
 
   // Save the session in a cookie
   (await cookies()).set("session", session, {
@@ -51,11 +54,11 @@ export async function loginUser(email: string, password: string) {
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    return { success: false, message: 'Invalid username or password.'}
+    return { success: false, message: 'Invalid email or password.'}
   }
 
   //create the session
-  const session = await encrypt({ email: user.email, name: user.name });
+  const session = await encrypt({ email: user.email, username: user.username });
 
   //save the session in a cookie
   (await cookies()).set("session", session, {
@@ -71,6 +74,52 @@ export async function loginUser(email: string, password: string) {
 export async function logout() {
   //delete the cookie
   (await cookies()).set("session", "", { maxAge: 0 });
+}
+
+export async function forgotPassword(email: string) {
+  const user = await User.findOne({ email });
+  if (!user) {
+    return { message: "If this email exists, a link has been sent." };
+  }
+  console.log(user);
+
+  // generate a token
+  const token = randomBytesToHex(32);
+  console.log(token);
+
+  // store in session or DB
+  await PasswordResetToken.create({
+    token,
+    userId: user._id,
+    expiresAt: new Date(Date.now() + 1000 * 60 * 15), // 15 min
+  });
+
+  // optional: set cookie (if you prefer session-based)
+  (await cookies()).set("reset_token", token, {
+    httpOnly: true,
+    maxAge: 15 * 60,
+  });
+
+  const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${token}`;
+  await sendResetEmail(user.email, resetUrl);
+
+  return { message: "Password reset link sent!" };
+}
+
+export async function resetPassword(token: string, newPassword: string) {
+  await connectToDatabase();
+
+  const reset = await PasswordResetToken.findOne({ token });
+  if (!reset || reset.expiresAt < new Date()) {
+    return { message: "Invalid or expired token." };
+  }
+
+  const hashed = await bcrypt.hash(newPassword, 10);
+  await User.findByIdAndUpdate(reset.userId, { password: hashed });
+
+  await PasswordResetToken.deleteOne({ token });
+
+  return { message: "Password successfully reset!" };
 }
 
 export async function getSession() {

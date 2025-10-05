@@ -23,3 +23,17 @@ export async function decrypt(input: string): Promise<any> {
   });
   return payload;
 }
+
+/**
+ * Generate random bytes and return as hex string
+ * @param length - Number of bytes to generate
+ * @returns returns Random hex string
+ */
+export function randomBytesToHex(length: number) {
+  let hex = "";
+  for (let i = 0; i < length; i++) {
+    const byte = Math.floor(Math.random() * 256);
+    hex += byte.toString(16).padStart(2, "0");
+  }
+  return hex;
+}

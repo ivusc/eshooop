@@ -8,7 +8,6 @@ export default async function LoginPage() {
   const session = await getSession()
 
   if (session !== null) redirect('/');
-
   
   return (
     <main className="flex min-h-[70vh] items-center justify-center">

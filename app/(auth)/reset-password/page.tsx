@@ -1,39 +1,74 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { resetPassword } from "@/actions/auth-form.actions";
+import { resetPassword } from "@/actions/auth.actions";
 import { Button } from "@/components/ui/button";
+import z from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+
+const resetPasswordSchema = z.object({
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters" }),
+});
 
 export default function ResetPasswordPage() {
   const params = useSearchParams();
   const router = useRouter();
   const token = params.get("token");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!token) return setMessage("Invalid reset link");
-    const res = await resetPassword(token, password);
-    setMessage(res.message);
-    router.push('/')
+  const resetPasswordForm = useForm<z.infer<typeof resetPasswordSchema>>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: {
+      password: "",
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof resetPasswordSchema>) {
+    if (!token) return toast.error("Invalid reset link.");
+    const res = await resetPassword(token, values.password);
+    toast.success(res.message);
+    router.push("/");
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-20 space-y-4">
-      <h1 className="text-2xl font-semibold">Reset Password</h1>
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="New password"
-        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <Button className="bg-green-500 py-2 px-4 rounded-lg hover:bg-green-600 transition-colors">
-        Reset
-      </Button>
-      {message && <p className="text-sm mt-2">{message}</p>}
-    </form>
+    <Form {...resetPasswordForm}>
+      <form
+        onSubmit={resetPasswordForm.handleSubmit(onSubmit)}
+        className="max-w-md mx-auto mt-20 space-y-4"
+      >
+        <FormField
+          control={resetPasswordForm.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Reset Password</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter your password"
+                  type="password"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button className="bg-green-500 py-2 px-4 rounded-lg hover:bg-green-600 transition-colors">
+          Reset
+        </Button>
+      </form>
+    </Form>
   );
 }

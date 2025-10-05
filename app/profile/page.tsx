@@ -4,10 +4,13 @@ import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { getSession } from "@/actions/auth.actions";
+import { redirect } from "next/navigation";
 
 export default async function ProfilePage() {
   const session = await getSession();
   const user = await getUser(session.email);
+
+  if (!user) redirect('/')
 
   return (
     <main className="flex min-h-[70vh] items-center justify-center p-6">
@@ -15,12 +18,12 @@ export default async function ProfilePage() {
         <CardHeader className="flex flex-col items-center gap-4">
           <Avatar className="w-24 h-24">
             <AvatarImage
-              src={`https://api.dicebear.com/8.x/initials/svg?seed=${user.name}`}
-              alt={user.name}
+              src={`https://api.dicebear.com/8.x/initials/svg?seed=${user.username}`}
+              alt={user.username}
             />
-            <AvatarFallback>{user.name[0]}</AvatarFallback>
+            <AvatarFallback>{user.username[0]}</AvatarFallback>
           </Avatar>
-          <CardTitle className="text-2xl font-bold">{user.name}</CardTitle>
+          <CardTitle className="text-2xl font-bold">{user.username}</CardTitle>
           <p className="text-gray-500 text-sm">{user.email}</p>
         </CardHeader>
 
