@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,8 +12,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { loginUser } from "@/actions/auth.actions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";

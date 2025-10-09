@@ -4,7 +4,9 @@ import { getProduct } from '@/actions/product.action';
 import { getUser } from '@/actions/user.actions';
 import { Button } from '@/components/ui/button';
 import { IUser } from '@/models/User';
+import { Pencil, ShoppingBasket } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react'
 
@@ -47,10 +49,17 @@ export default async function ProductPage({ params } : { params: { id: string }}
 
           <div className="flex items-center gap-4">
             <form action={handleAdd}>
-              <Button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+              <Button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 cursor-pointer">
                 Add to Cart
+                <ShoppingBasket />
               </Button>
             </form>
+            <Link href={`/products/edit/${id}`}>
+              <Button className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 cursor-pointer">
+                Edit {" "}
+                <Pencil />
+              </Button>
+            </Link>
             <span className="text-gray-500">Stock: {product.stock}</span>
           </div>
         </div>

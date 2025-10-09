@@ -1,10 +1,10 @@
-import { getSession, logout } from '@/actions/auth.actions'
+import { getSession } from '@/actions/auth.actions'
 import { User } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { Button } from '../ui/button'
 import { navLinks } from '@/lib/constants'
-import LogoutForm from '../forms/logout-form'
+import LogoutForm from '../forms/auth/logout-form'
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '../ui/navigation-menu'
 
 

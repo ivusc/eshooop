@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { logout } from '@/actions/auth.actions';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';

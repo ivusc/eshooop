@@ -1,5 +1,7 @@
 import { getProducts } from '@/actions/product.action';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { IProduct } from '@/models/Product';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
@@ -8,12 +10,12 @@ export default async function ProductsPage() {
   const products = await getProducts();
 
   return (
-    <main className="p-8 mx-72">
+    <main className="xl:mx-16">
       <Input placeholder='Search for products...' className='mb-4'/>
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {products.map((product: any) => (
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+        {products.map((product: IProduct) => (
           <div
-            key={product._id}
+            key={product._id.toString()}
             className=" rounded-lg overflow-hidden hover:bg-accent cursor-pointer transition"
           >
             {product.pictures?.[0] && (
@@ -36,9 +38,9 @@ export default async function ProductsPage() {
                 <p className="text-accent-foreground text-sm mb-4 line-clamp-2">
                   {product.description}
                 </p>
-                <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+                <Button className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
                   Add to Cart
-                </button>
+                </Button>
               </div>
             </Link>
           </div>

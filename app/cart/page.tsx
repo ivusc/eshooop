@@ -1,11 +1,11 @@
 import { getCart, addToCart, removeFromCart } from "@/actions/cart.actions";
 import { revalidatePath } from "next/cache";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { getSession } from "@/actions/auth.actions";
 import { getUser } from "@/actions/user.actions";
 import { redirect } from "next/navigation";
-import { ICart } from "@/models/Cart";
+import { ICart, ICartItem } from "@/models/Cart";
 import Image from "next/image";
 
 export default async function CartPage() {
@@ -15,6 +15,8 @@ export default async function CartPage() {
   if (!user) redirect('/');
 
   const cart : ICart = await getCart(user._id);
+
+  console.log(typeof cart.items[0])
 
   if (!cart || cart.items.length === 0)
     return (
@@ -27,8 +29,8 @@ export default async function CartPage() {
     <main className="max-w-3xl mx-auto p-6 space-y-6">
       <h1 className="text-3xl font-bold mb-4">Your Cart</h1>
 
-      {cart.items.map((item: any) => (
-        <CartItem key={item.product._id} userId={cart.user.toString()} item={item} />
+      {cart.items.map((item: ICartItem) => (
+        <CartItem key={item.product._id.toString()} userId={cart.user.toString()} item={item} />
       ))}
 
       <Card className="p-4 px-12 mt-6 flex flex-row justify-between items-center">
@@ -43,16 +45,16 @@ export default async function CartPage() {
   );
 }
 
-async function CartItem({ userId, item }: { userId: string; item: any }) {
+async function CartItem({ userId, item }: { userId: string; item: ICartItem }) {
   async function handleRemove() {
     "use server";
-    await removeFromCart(userId, item.product._id);
+    await removeFromCart(userId, item.product._id.toString());
     revalidatePath("/cart");
   }
 
   async function handleAdd() {
     "use server";
-    await addToCart(userId, item.product._id, 1);
+    await addToCart(userId, item.product._id.toString(), 1);
     revalidatePath("/cart");
   }
 
