@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 const registerSchema = z.object({
   username: z
     .string()
-    .min(5, { message: "Name must be at least 5 characters" }),
+    .min(5, { message: "Username must be at least 5 characters" }),
   email: z.email({ message: "Invalid email address" }),
   password: z
     .string()

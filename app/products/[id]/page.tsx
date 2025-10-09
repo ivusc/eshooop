@@ -3,20 +3,22 @@ import { addToCart } from '@/actions/cart.actions';
 import { getProduct } from '@/actions/product.action';
 import { getUser } from '@/actions/user.actions';
 import { Button } from '@/components/ui/button';
-import { revalidatePath } from 'next/cache';
+import { IUser } from '@/models/User';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
 import React from 'react'
-import { toast } from 'sonner';
 
 export default async function ProductPage({ params } : { params: { id: string }}) {
   const { id } = await params;
   const product = await getProduct(id);
   const session = await getSession();
-  const user = await getUser(session.email);
+  let user : IUser | null = null;
+  if (session) user = await getUser(session?.email);
 
   async function handleAdd() {
     "use server"
-    await addToCart(user._id, product._id, 1);
+    if(!user) redirect('/login');
+    await addToCart(user._id.toString(), product._id, 1);
   }
 
   return (
@@ -24,9 +26,9 @@ export default async function ProductPage({ params } : { params: { id: string }}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Product Image */}
         <div className="relative w-full h-96 rounded-xl overflow-hidden shadow-md">
-          {product.images?.[0] && (
+          {product.pictures?.[0] && (
             <Image
-              src={product.images[0]}
+              src={product.pictures[0]}
               alt={product.name}
               fill
               className="object-cover"
@@ -41,7 +43,7 @@ export default async function ProductPage({ params } : { params: { id: string }}
           <p className="text-2xl font-semibold text-blue-600 mb-4">
             ${product.price.toFixed(2)}
           </p>
-          <p className="text-gray-700 mb-6">{product.description}</p>
+          <p className="mb-6">{product.description}</p>
 
           <div className="flex items-center gap-4">
             <form action={handleAdd}>

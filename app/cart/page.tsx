@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getSession } from "@/actions/auth.actions";
 import { getUser } from "@/actions/user.actions";
 import { redirect } from "next/navigation";
+import { ICart } from "@/models/Cart";
+import Image from "next/image";
 
 export default async function CartPage() {
   const session = await getSession();
@@ -12,7 +14,7 @@ export default async function CartPage() {
 
   if (!user) redirect('/');
 
-  const cart = await getCart(user._id);
+  const cart : ICart = await getCart(user._id);
 
   if (!cart || cart.items.length === 0)
     return (
@@ -26,17 +28,17 @@ export default async function CartPage() {
       <h1 className="text-3xl font-bold mb-4">Your Cart</h1>
 
       {cart.items.map((item: any) => (
-        <CartItem key={item.product._id} userId={cart.user} item={item} />
+        <CartItem key={item.product._id} userId={cart.user.toString()} item={item} />
       ))}
 
-      <Card className="p-4 mt-6">
-        <CardHeader>
-          <CardTitle className="text-xl">Total</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-lg font-semibold">${cart.totalPrice.toFixed(2)}</p>
-        </CardContent>
+      <Card className="p-4 px-12 mt-6 flex flex-row justify-between items-center">
+        <p className="font-semibold text-lg">Total</p>
+        <p className="font-semibold text-lg">${cart.totalPrice.toFixed(2)}</p>
       </Card>
+      
+      <div className="flex flex-row justify-center items-center">
+        <Button className="items-center justify-center">Checkout</Button>
+      </div>
     </main>
   );
 }
@@ -55,10 +57,12 @@ async function CartItem({ userId, item }: { userId: string; item: any }) {
   }
 
   return (
-    <Card className="flex items-center justify-between p-4 shadow-sm">
+    <Card className="flex flex-row items-center justify-between p-4 px-12 shadow-sm">
       <div className="flex items-center gap-4">
-        <img
-          src={item.product.images?.[0] || "/placeholder.png"}
+        <Image
+          width={128}
+          height={128}
+          src={item.product.pictures?.[0] || "/placeholder.png"}
           alt={item.product.name}
           className="w-20 h-20 object-cover rounded-md"
         />

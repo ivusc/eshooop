@@ -5,6 +5,7 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { navLinks } from '@/lib/constants'
 import LogoutForm from '../forms/logout-form'
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '../ui/navigation-menu'
 
 
 export default async function Navbar() {
@@ -16,15 +17,31 @@ export default async function Navbar() {
         <p className="font-bold text-lg">eShooop</p>
       </Link>
       <div className='hidden md:flex flex-row items-center space-x-4'>
-        {navLinks.map((link) => (
-          <Link href={link.link} scroll={false} key={link.label} className='flex flex-row items-center justify-center space-x-4 hover:underline rounded-md p-2 '>
-            <p className='font-medium'>{link.label}</p>
-          </Link>
-        ))}
+        <NavigationMenu>
+          <NavigationMenuList>
+          {navLinks.map((link) => (
+            <NavigationMenuItem key={link.label}>
+              <Link href={link.link}>
+                {link.sublinks ? <NavigationMenuTrigger>{link.label}</NavigationMenuTrigger> : 
+                  <p className='px-4 py-2 hover:bg-accent rounded-lg text-sm'>{link.label}</p>
+                }
+              </Link>
+              <NavigationMenuContent className='md:w-[200px]'>
+              {link.sublinks && link.sublinks.map((sublink) => (
+                <NavigationMenuLink href={sublink.link} key={sublink.label}>
+                  <p className='px-4 py-2'>{sublink.label}</p>
+                </NavigationMenuLink>
+              ))}
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          ))}
+          </NavigationMenuList>
+        </NavigationMenu>
+
         {session !== null ? (
           <>
             <Link href='/cart' className='flex flex-row items-center justify-center space-x-4 hover:underline rounded-md p-2'>
-              <p className='font-medium'>Cart</p>
+              <p className='font-medium'>Cart 🛒</p>
             </Link>
             <div className='flex flex-row justify-between items-center space-x-4 hover:bg-accent p-2 rounded-md cursor-pointer'>
               <Link href='/profile' className='flex flex-row'>
