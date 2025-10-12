@@ -1,10 +1,11 @@
 import { getSession } from '@/actions/auth.actions';
 import { addToCart } from '@/actions/cart.actions';
-import { getProduct } from '@/actions/product.action';
+import { deleteProduct, getProduct } from '@/actions/product.action';
 import { getUser } from '@/actions/user.actions';
 import { Button } from '@/components/ui/button';
+import { IProduct } from '@/models/Product';
 import { IUser } from '@/models/User';
-import { Pencil, ShoppingBasket } from 'lucide-react';
+import { Pencil, ShoppingBasket, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -12,7 +13,7 @@ import React from 'react'
 
 export default async function ProductPage({ params } : { params: { id: string }}) {
   const { id } = await params;
-  const product = await getProduct(id);
+  const product: IProduct = await getProduct(id);
   const session = await getSession();
   let user : IUser | null = null;
   if (session) user = await getUser(session?.email);
@@ -20,7 +21,13 @@ export default async function ProductPage({ params } : { params: { id: string }}
   async function handleAdd() {
     "use server"
     if(!user) redirect('/login');
-    await addToCart(user._id.toString(), product._id, 1);
+    await addToCart(user._id.toString(), product._id.toString(), 1);
+  }
+
+  async function handleDeleteProduct() {
+    "use server";
+    await deleteProduct(product._id.toString());
+    redirect('/products');
   }
 
   return (
@@ -54,12 +61,21 @@ export default async function ProductPage({ params } : { params: { id: string }}
                 <ShoppingBasket />
               </Button>
             </form>
-            <Link href={`/products/edit/${id}`}>
-              <Button className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 cursor-pointer">
-                Edit {" "}
-                <Pencil />
-              </Button>
-            </Link>
+            {user?.role === 'Seller' && 
+              <div className="flex space-x-4">
+                <Link href={`/products/edit/${id}`}>
+                  <Button className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 cursor-pointer">
+                    Edit {" "}
+                    <Pencil />
+                  </Button>
+                </Link>
+                <form action={handleDeleteProduct} className='w-fit'>
+                  <Button className='bg-red-600 text-white rounded-md hover:bg-red-700 cursor-pointer'>
+                    <Trash2 />
+                  </Button>
+                </form>
+              </div>
+            }
             <span className="text-gray-500">Stock: {product.stock}</span>
           </div>
         </div>

@@ -12,6 +12,15 @@ export async function getCart(userId: string) {
   return JSON.parse(JSON.stringify(cart));
 }
 
+export async function getTotalItemsInCart(userId: string) {
+  await connectToDatabase();
+  const cart : ICart | null  = await Cart.findOne({ user: userId })
+  
+  if (!cart) if (!cart) return { success: false, message: 'Cart not found.' }
+
+  return cart.items.length;
+}
+
 /** 🛒 Add to Cart */
 export async function addToCart(userId: string, productId: string, quantity = 1) {
   await connectToDatabase();

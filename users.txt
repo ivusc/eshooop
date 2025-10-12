@@ -5,3 +5,23 @@ test1234
 
 pefag97500@erynka.com
 test1234
+
+Functions:
+Users
+- create
+- register
+- updater
+
+Cart
+- Add
+- Edit
+- Remove
+
+Product
+- Add 
+- Edit
+- View
+- Remove
+
+Checkout function stripe, search bar
+Edit profile

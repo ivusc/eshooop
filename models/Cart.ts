@@ -2,7 +2,7 @@ import mongoose, { Schema, Document, models } from "mongoose";
 import { IProduct } from "./Product";
 
 export interface ICartItem {
-  product: IProduct;
+  product: mongoose.Types.ObjectId | IProduct;
   quantity: number;
 }
 

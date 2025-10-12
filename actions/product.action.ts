@@ -18,7 +18,7 @@ export async function getProducts(category?: string){
 export async function getProduct(id: string){
   await connectToDatabase();
   const product = await Product.findById(id).lean();
-  if (!product) throw new Error('Product not found');
+  if (!product) return { success: false, message: 'Product not found' }
   return JSON.parse(JSON.stringify(product));
 }
 
@@ -29,4 +29,28 @@ export async function createProduct(name: string, description: string, price: nu
   console.log(product);
 
   return { success: true, message: 'Product successfully created.' }
+}
+
+export async function updateProduct(id: string, name: string, description: string, price: number, category: string, stock: number, pictures: string[]){
+  await connectToDatabase();
+
+  const product = await Product.findById(id).lean();
+  if (!product) return { success: false, message: 'Product not found' }
+
+  const newProduct = await Product.findByIdAndUpdate(id, { name, description, price, category, stock, pictures });
+  console.log(newProduct);
+
+  return { success: true, message: 'Product successfully updated.' }
+}
+
+export async function deleteProduct(id: string){
+  await connectToDatabase();
+
+  try{
+    await Product.findByIdAndDelete(id);
+  } catch (error) {
+    return { success: false, message: error }
+  }
+
+  return { success: true, message: 'Product deleted.'}
 }

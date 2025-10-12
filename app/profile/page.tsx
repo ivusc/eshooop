@@ -49,6 +49,13 @@ export default async function ProfilePage() {
             </span>
           </div>
 
+          <div className="flex justify-between">
+            <span className="text-gray-500">Role</span>
+            <span className="font-mono text-sm text-gray-700">
+              {user.role}
+            </span>
+          </div>
+
           <div className="pt-4">
             <Button variant="default" className="w-full">
               Edit Profile

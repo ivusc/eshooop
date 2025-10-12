@@ -37,3 +37,23 @@ export function randomBytesToHex(length: number) {
   }
   return hex;
 }
+
+
+export function convertToPictureStringArr(pictureObject: { url: string }[]){
+  const pictures: string[] = [];
+  for (const picture of pictureObject) {
+    pictures.push(picture.url)
+  }
+
+  return pictures;
+}
+
+export function convertToPictureObjectArr(pictureString: string[]){
+  const pictures: { url: string }[] = []
+
+  for (const picture of pictureString){
+    pictures.push({ url: picture })
+  }
+
+  return pictures;
+}

@@ -6,10 +6,17 @@ import { Button } from '../ui/button'
 import { navLinks } from '@/lib/constants'
 import LogoutForm from '../forms/auth/logout-form'
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '../ui/navigation-menu'
+import { getUser } from '@/actions/user.actions'
+import { getTotalItemsInCart } from '@/actions/cart.actions'
 
 
 export default async function Navbar() {
   const session = await getSession()
+  let user;
+  if (session) user = await getUser(session?.email);
+
+  let cartItemsTotal;
+  if (user) cartItemsTotal = await getTotalItemsInCart(user._id);
 
   return (
     <nav className="flex flex-row justify-between items-center md:px-12 px-4 bg-opacity-50 py-4 top-0 sticky backdrop-blur-lg h-[10vh] z-20 w-full">
@@ -40,8 +47,8 @@ export default async function Navbar() {
 
         {session !== null ? (
           <>
-            <Link href='/cart' className='flex flex-row items-center justify-center space-x-4 hover:underline rounded-md p-2'>
-              <p className='font-medium'>Cart 🛒</p>
+            <Link href='/cart' className='flex flex-row items-center justify-center space-x-4 hover:bg-accent rounded-md px-4 py-2'>
+              <p className='font-medium'>Cart 🛒 ({cartItemsTotal?.toString()})</p>
             </Link>
             <div className='flex flex-row justify-between items-center space-x-4 hover:bg-accent p-2 rounded-md cursor-pointer'>
               <Link href='/profile' className='flex flex-row'>
