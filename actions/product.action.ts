@@ -1,9 +1,9 @@
-"use server"
+"use server";
 
 import { connectToDatabase } from "@/lib/mongodb";
 import Product from "@/models/Product";
 
-export async function getProducts(category?: string){
+export async function getProducts(category?: string) {
   await connectToDatabase();
 
   if (!category) {
@@ -11,46 +11,96 @@ export async function getProducts(category?: string){
     return JSON.parse(JSON.stringify(products));
   }
 
-  const products = await Product.find({ category }).lean()
+  const products = await Product.find({ category })
+    .sort({ createdAt: -1 })
+    .lean();
   return JSON.parse(JSON.stringify(products));
 }
 
-export async function getProduct(id: string){
+export async function getProduct(id: string) {
   await connectToDatabase();
   const product = await Product.findById(id).lean();
-  if (!product) return { success: false, message: 'Product not found' }
+  if (!product) return { success: false, message: "Product not found" };
   return JSON.parse(JSON.stringify(product));
 }
 
-export async function createProduct(name: string, description: string, price: number, category: string, stock: number, pictures: string[]){
+// export async function searchProduct(query: string) {
+//   await connectToDatabase();
+
+//   if (!query || query.trim() === "") {
+//     // Return all products if query empty
+//     const products = await Product.find().sort({ createdAt: -1 }).lean();
+//     return JSON.parse(JSON.stringify(products));
+//   }
+
+//   // Perform case-insensitive partial match
+//   const products = await Product.find({
+//     name: { $regex: query, $options: "i" },
+//   })
+//     .sort({ createdAt: -1 })
+//     .lean();
+
+//   return JSON.parse(JSON.stringify(products));
+// }
+
+export async function createProduct(
+  name: string,
+  description: string,
+  price: number,
+  category: string,
+  stock: number,
+  pictures: string[]
+) {
   await connectToDatabase();
 
-  const product = await Product.create({ name, description, price, category, stock, pictures });
+  const product = await Product.create({
+    name,
+    description,
+    price,
+    category,
+    stock,
+    pictures,
+  });
   console.log(product);
 
-  return { success: true, message: 'Product successfully created.' }
+  return { success: true, message: "Product successfully created." };
 }
 
-export async function updateProduct(id: string, name: string, description: string, price: number, category: string, stock: number, pictures: string[]){
+export async function updateProduct(
+  id: string,
+  name: string,
+  description: string,
+  price: number,
+  category: string,
+  stock: number,
+  pictures: string[]
+) {
   await connectToDatabase();
 
   const product = await Product.findById(id).lean();
-  if (!product) return { success: false, message: 'Product not found' }
+  if (!product) return { success: false, message: "Product not found" };
 
-  const newProduct = await Product.findByIdAndUpdate(id, { name, description, price, category, stock, pictures });
+  const newProduct = await Product.findByIdAndUpdate(id, {
+    name,
+    description,
+    price,
+    category,
+    stock,
+    pictures,
+  });
   console.log(newProduct);
 
-  return { success: true, message: 'Product successfully updated.' }
+  return { success: true, message: "Product successfully updated." };
 }
 
-export async function deleteProduct(id: string){
+export async function deleteProduct(id: string) {
   await connectToDatabase();
 
-  try{
+  try {
     await Product.findByIdAndDelete(id);
   } catch (error) {
-    return { success: false, message: error }
+    return { success: false, message: error };
   }
 
-  return { success: true, message: 'Product deleted.'}
+  return { success: true, message: "Product deleted." };
 }
