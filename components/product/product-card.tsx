@@ -36,7 +36,7 @@ export default function ProductCard({ product, user } : { product: IProduct, use
         </div>
       </Link>
       <div className="flex space-x-1">
-        {user?.role == 'Buyer' && 
+        {user?.role == 'Buyer' && product.stock > 0 &&
         <Button className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 cursor-pointer">
           Add to Cart
         </Button>}

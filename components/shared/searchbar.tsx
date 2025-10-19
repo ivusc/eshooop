@@ -21,7 +21,6 @@ export default function Searchbar({
 
   function handleKeydown(event: React.KeyboardEvent) {
     if (event.key === 'Enter') {
-      console.log(debounced)
       onSearch(debounced)
     }
   }
@@ -38,7 +37,7 @@ export default function Searchbar({
   }, [debounced]);
 
   return (
-    <div className="flex items-center gap-2 w-full max-w-md p-2 rounded-xl shadow-sm border">
+    <div className="flex items-center gap-2 w-full max-w-2xl p-2 rounded-xl shadow-sm border">
       <div className="relative flex-grow">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-accent-foreground w-4 h-4" />
         <Input
