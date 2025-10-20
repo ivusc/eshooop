@@ -48,15 +48,15 @@ export default async function ProductPage({ params } : { params: { id: string }}
         {/* Product Info */}
         <div>
           <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-          <p className="text-gray-600 mb-2">{product.category}</p>
-          <p className="text-2xl font-semibold text-blue-600 mb-4">
+          <p className="text-accent-foreground mb-2">{product.category}</p>
+          <p className="text-2xl font-semibold mb-4">
             ${product.price.toFixed(2)}
           </p>
           <p className="mb-6">{product.description}</p>
 
           <div className="flex items-center gap-4">
             <form action={handleAdd}>
-              <Button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 cursor-pointer">
+              <Button className=" px-6 py-2 rounded-lg cursor-pointer">
                 Add to Cart
                 <ShoppingBasket />
               </Button>
@@ -64,13 +64,13 @@ export default async function ProductPage({ params } : { params: { id: string }}
             {user?.role === 'Seller' && 
               <div className="flex space-x-4">
                 <Link href={`/products/edit/${id}`}>
-                  <Button className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 cursor-pointer">
+                  <Button className="bg-emerald-600 text-white px-6 py-2 rounded-md hover:bg-emerald-700 cursor-pointer">
                     Edit {" "}
                     <Pencil />
                   </Button>
                 </Link>
                 <form action={handleDeleteProduct} className='w-fit'>
-                  <Button className='bg-red-600 text-white rounded-md hover:bg-red-700 cursor-pointer'>
+                  <Button variant='destructive' className='rounded-md cursor-pointer'>
                     <Trash2 />
                   </Button>
                 </form>

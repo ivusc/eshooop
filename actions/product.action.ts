@@ -24,25 +24,6 @@ export async function getProduct(id: string) {
   return JSON.parse(JSON.stringify(product));
 }
 
-// export async function searchProduct(query: string) {
-//   await connectToDatabase();
-
-//   if (!query || query.trim() === "") {
-//     // Return all products if query empty
-//     const products = await Product.find().sort({ createdAt: -1 }).lean();
-//     return JSON.parse(JSON.stringify(products));
-//   }
-
-//   // Perform case-insensitive partial match
-//   const products = await Product.find({
-//     name: { $regex: query, $options: "i" },
-//   })
-//     .sort({ createdAt: -1 })
-//     .lean();
-
-//   return JSON.parse(JSON.stringify(products));
-// }
-
 export async function createProduct(
   name: string,
   description: string,
