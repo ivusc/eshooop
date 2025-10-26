@@ -1,5 +1,5 @@
 import { getSession } from "@/actions/auth.actions";
-import RegisterForm from "@/components/forms/auth/register-form";
+import RegisterForm from "@/app/(auth)/register/register-form";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 

@@ -9,9 +9,23 @@ import Rating from './product-rating'
 import { deleteProduct } from '@/actions/product.action'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { addToCart } from '@/actions/cart.actions'
 // import { revalidatePath } from 'next/cache'
 
 export default function ProductCard({ product, user } : { product: IProduct, user: IUser }) {
+  const router = useRouter();
+
+  async function handleAdd() {
+    const res = await addToCart(user._id.toString(), product._id.toString());
+
+    if (res.success) {
+      toast.success(`Product deleted successfully.`);
+    } else {
+      toast.error('Error deleting');
+    }
+    router.refresh();
+  }
+
   return (
     <div
       key={product._id.toString()}
@@ -39,14 +53,19 @@ export default function ProductCard({ product, user } : { product: IProduct, use
       </Link>
       <div className="flex space-x-1">
         {user?.role == 'Buyer' && product.stock > 0 &&
-        <Button className="w-full py-2 px-4 rounded-md cursor-pointer">
-          Add to Cart
-        </Button>}
-        {user?.role == 'Seller' && 
-          <div className='flex space-x-1 p-2'>
-            <Button className=" py-2 px-4 rounded-md cursor-pointer">
+          <form onSubmit={handleAdd}>
+            <Button className="w-full py-2 px-4 rounded-md cursor-pointer">
               Add to Cart
             </Button>
+          </form>
+        }
+        {user?.role == 'Seller' && 
+          <div className='flex space-x-1 p-2'>
+            <form onSubmit={handleAdd}>
+              <Button className=" py-2 px-4 rounded-md cursor-pointer">
+                Add to Cart
+              </Button>
+            </form>
             <Link href={`/products/edit/${product._id.toString()}`} className='w-fit'>
               <Button className='bg-emerald-600 hover:bg-emerald-700 text-white rounded-md cursor-pointer'>
                 <Pencil />

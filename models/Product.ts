@@ -1,4 +1,10 @@
-import mongoose, { Schema, models, model } from "mongoose";
+import mongoose, { Schema, models, model, Document } from "mongoose";
+
+// export interface IProductReviewSchema extends Document {
+//   product: mongoose.Types.ObjectId | IProduct;
+//   review: string;
+//   user: mongoose.Types.ObjectId;
+// }
 
 export interface IProduct extends Document {
   _id: mongoose.Types.ObjectId,
@@ -12,7 +18,11 @@ export interface IProduct extends Document {
   updatedAt: Date;
 }
 
-const ProductSchema = new Schema(
+// const ProductReviewSchema = new Schema({
+
+// })
+
+const ProductSchema = new Schema<IProduct>(
   {
     name: { type: String, required: true },
     description: { type: String },

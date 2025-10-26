@@ -1,7 +1,5 @@
 import { getSession } from "@/actions/auth.actions";
-import { Hero } from "@/components/home/hero";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Hero } from "./hero";
 
 export default async function Home() {
   const session = await getSession();

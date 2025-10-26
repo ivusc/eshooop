@@ -25,3 +25,10 @@ Product
 
 Checkout function stripe, search bar
 Edit profile
+
+Stripe test cards
+
+4242 4242 4242 4242
+12 / 34
+567
+John Tan

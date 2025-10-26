@@ -49,7 +49,7 @@ export async function addToCart(userId: string, productId: string, quantity = 1)
   cart!.totalPrice = await calculateCartTotal(cart!.items);
   await cart!.save();
 
-  return JSON.parse(JSON.stringify(cart));
+  return { success: true, message: "Product added to cart."}
 }
 
 export async function removeFromCart(userId: string, productId: string, quantity = 1) {

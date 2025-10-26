@@ -1,5 +1,5 @@
 import { getProduct } from "@/actions/product.action";
-import EditProductForm from "@/components/forms/product/edit-product-form";
+import EditProductForm from "@/app/products/edit/edit-product-form";
 import { convertToPictureObjectArr } from "@/lib/utils";
 import { IProduct } from "@/models/Product";
 

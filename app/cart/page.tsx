@@ -1,23 +1,20 @@
-import { getCart, addToCart, removeFromCart } from "@/actions/cart.actions";
-import { revalidatePath } from "next/cache";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { getCart } from "@/actions/cart.actions";
 import { getSession } from "@/actions/auth.actions";
 import { getUser } from "@/actions/user.actions";
 import { redirect } from "next/navigation";
 import { ICart, ICartItem } from "@/models/Cart";
-import Image from "next/image";
-import { IProduct } from "@/models/Product";
+import CheckoutButton from "./checkout-button";
+import { Card } from "@/components/ui/card";
+import { CartItem } from "@/app/cart/cart-item";
+import { IUser } from "@/models/User";
 
 export default async function CartPage() {
   const session = await getSession();
-  const user = await getUser(session.email);
+  const user : IUser = await getUser(session.email);
 
   if (!user) redirect('/');
 
-  const cart : ICart = await getCart(user._id);
-
-  //console.log(typeof cart.items[0])
+  const cart : ICart = await getCart(user._id.toString());
 
   if (!cart || cart.items.length === 0)
     return (
@@ -26,7 +23,7 @@ export default async function CartPage() {
       </main>
     );
 
-  return (
+  return(
     <main className="max-w-3xl mx-auto p-6 space-y-6">
       <h1 className="text-3xl font-bold mb-4">Your Cart</h1>
 
@@ -38,58 +35,10 @@ export default async function CartPage() {
         <p className="font-semibold text-lg">Total</p>
         <p className="font-semibold text-lg">${cart.totalPrice.toFixed(2)}</p>
       </Card>
-      
-      <div className="flex flex-row justify-center items-center">
-        <Button className="items-center justify-center">Checkout</Button>
-      </div>
+
+      <CheckoutButton userId={user._id.toString()}/>
     </main>
-  );
+  )
 }
 
-async function CartItem({ userId, item }: { userId: string; item: ICartItem }) {
-  const product = item.product as IProduct;
 
-  async function handleRemove() {
-    "use server";
-    await removeFromCart(userId, product._id.toString());
-    revalidatePath("/cart");
-  }
-
-  async function handleAdd() {
-    "use server";
-    await addToCart(userId, product._id.toString(), 1);
-    revalidatePath("/cart");
-  }
-
-  return (
-    <Card className="flex flex-row items-center justify-between p-4 px-12 shadow-sm">
-      <div className="flex items-center gap-4">
-        <Image
-          width={128}
-          height={128}
-          src={product.pictures?.[0] || "/placeholder.png"}
-          alt={product.name}
-          className="w-20 h-20 object-cover rounded-md"
-        />
-        <div>
-          <h2 className="font-semibold">{product.name}</h2>
-          <p className="text-sm text-gray-500">${product.price}</p>
-          <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
-        </div>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <form action={handleAdd}>
-          <Button type="submit" size="sm" variant="outline">
-            +
-          </Button>
-        </form>
-        <form action={handleRemove}>
-          <Button type="submit" size="sm" variant="destructive">
-            -
-          </Button>
-        </form>
-      </div>
-    </Card>
-  );
-}

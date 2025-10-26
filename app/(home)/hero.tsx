@@ -1,8 +1,8 @@
 "use client";
 import { motion } from "motion/react";
-import { HeroHighlight, Highlight } from "../ui/hero-highlight";
+import { HeroHighlight, Highlight } from "@/components/ui/hero-highlight";
 import Link from "next/link";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 export function Hero() {
   return (

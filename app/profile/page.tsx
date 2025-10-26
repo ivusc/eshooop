@@ -14,7 +14,7 @@ export default async function ProfilePage() {
 
   return (
     <main className="flex min-h-[70vh] items-center justify-center p-6">
-      <Card className="w-full max-w-md rounded-2xl shadow-none">
+      <Card className="w-full max-w-md rounded-2xl shadow-none bg-background">
         <CardHeader className="flex flex-col items-center gap-4">
           <Avatar className="w-24 h-24">
             <AvatarImage
