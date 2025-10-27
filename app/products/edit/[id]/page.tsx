@@ -11,7 +11,7 @@ export default async function EditProductPage({ params } : { params: { id: strin
 
   const pictures = convertToPictureObjectArr(product.pictures)
 
-  const productRevised = { ...product, pictures: pictures }
+  const productRevised : Omit<IProduct, "pictures"> & { pictures: { url: string }[] } = { ...product, pictures: pictures }
 
   return (
     <main className='p-8 max-w-4xl mx-auto'>

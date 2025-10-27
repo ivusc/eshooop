@@ -1,12 +1,6 @@
-import mongoose, { Schema, models, model, Document } from "mongoose";
+import mongoose, { Schema, models, model } from "mongoose";
 
-// export interface IProductReviewSchema extends Document {
-//   product: mongoose.Types.ObjectId | IProduct;
-//   review: string;
-//   user: mongoose.Types.ObjectId;
-// }
-
-export interface IProduct extends Document {
+export interface IProduct {
   _id: mongoose.Types.ObjectId,
   name: string;
   description: string;
@@ -17,10 +11,6 @@ export interface IProduct extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
-
-// const ProductReviewSchema = new Schema({
-
-// })
 
 const ProductSchema = new Schema<IProduct>(
   {

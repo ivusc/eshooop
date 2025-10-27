@@ -4,28 +4,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { Button } from '../ui/button'
-import { Pencil, Trash2 } from 'lucide-react'
-import Rating from './product-rating'
-import { deleteProduct } from '@/actions/product.action'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
-import { addToCart } from '@/actions/cart.actions'
-// import { revalidatePath } from 'next/cache'
+import { Pencil } from 'lucide-react'
+import AddToCartButton from '@/components/product/add-to-cart-button'
+import DeleteProductButton from '@/components/product/delete-product-button'
 
 export default function ProductCard({ product, user } : { product: IProduct, user: IUser }) {
-  const router = useRouter();
-
-  async function handleAdd() {
-    const res = await addToCart(user._id.toString(), product._id.toString());
-
-    if (res.success) {
-      toast.success(`Product deleted successfully.`);
-    } else {
-      toast.error('Error deleting');
-    }
-    router.refresh();
-  }
-
   return (
     <div
       key={product._id.toString()}
@@ -45,7 +28,6 @@ export default function ProductCard({ product, user } : { product: IProduct, use
         <div className="px-4 py-2">
           <h2 className="text-lg font-semibold">{product.name}</h2>
           <p className="text-gray-400 text-sm mb-2">{product.category}</p>
-          <Rating />
           <p className="font-bold py-2">
             ${product.price.toFixed(2)}
           </p>
@@ -53,52 +35,20 @@ export default function ProductCard({ product, user } : { product: IProduct, use
       </Link>
       <div className="flex space-x-1">
         {user?.role == 'Buyer' && product.stock > 0 &&
-          <form onSubmit={handleAdd}>
-            <Button className="w-full py-2 px-4 rounded-md cursor-pointer">
-              Add to Cart
-            </Button>
-          </form>
+          <AddToCartButton user={user} product={product} />
         }
         {user?.role == 'Seller' && 
           <div className='flex space-x-1 p-2'>
-            <form onSubmit={handleAdd}>
-              <Button className=" py-2 px-4 rounded-md cursor-pointer">
-                Add to Cart
-              </Button>
-            </form>
+            <AddToCartButton user={user} product={product} />
             <Link href={`/products/edit/${product._id.toString()}`} className='w-fit'>
               <Button className='bg-emerald-600 hover:bg-emerald-700 text-white rounded-md cursor-pointer'>
                 <Pencil />
               </Button>
             </Link>
-            <DeleteButton productId={product._id.toString()} />
+            <DeleteProductButton product={product} user={user} />
           </div>
         }
       </div>
     </div>
-  )
-}
-
-
-function DeleteButton ({ productId } : { productId: string }) {
-  const router = useRouter();
-
-  async function handleDelete() {
-    const res = await deleteProduct(productId);
-
-    if (res.success) {
-      toast.success(`Product deleted successfully.`);
-    } else {
-      toast.error('Error deleting');
-    }
-    router.refresh();
-  }
-
-  return (
-    <form onSubmit={handleDelete} className='w-fit'>
-      <Button variant={'destructive'} className='text-white rounded-md cursor-pointer'>
-        <Trash2 />
-      </Button>
-    </form>
   )
 }

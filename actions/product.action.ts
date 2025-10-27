@@ -80,7 +80,7 @@ export async function deleteProduct(id: string) {
   try {
     await Product.findByIdAndDelete(id);
   } catch (error) {
-    return { success: false, message: error };
+    return { success: false, message: 'Unsuccessful.' };
   }
 
   return { success: true, message: "Product deleted." };

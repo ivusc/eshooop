@@ -25,7 +25,7 @@ export default async function Navbar() {
       </Link>
       <div className='hidden md:flex flex-row items-center space-x-4'>
         <NavigationMenu>
-          <NavigationMenuList>
+          <NavigationMenuList className='bg-opacity-50 backdrop-blur-lg'>
           {navLinks.map((link) => (
             <NavigationMenuItem key={link.label}>
               <Link href={link.link}>
@@ -33,7 +33,7 @@ export default async function Navbar() {
                   <p className='px-4 py-2 hover:bg-accent rounded-lg text-sm'>{link.label}</p>
                 }
               </Link>
-              <NavigationMenuContent className='md:w-[200px]'>
+              <NavigationMenuContent className='md:w-[200px] bg-background border-none'>
               {link.sublinks && link.sublinks.map((sublink) => (
                 <NavigationMenuLink href={sublink.link} key={sublink.label}>
                   <p className='px-4 py-2'>{sublink.label}</p>

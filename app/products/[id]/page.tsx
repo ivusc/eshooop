@@ -1,34 +1,32 @@
 import { getSession } from '@/actions/auth.actions';
-import { addToCart } from '@/actions/cart.actions';
-import { deleteProduct, getProduct } from '@/actions/product.action';
+import { getProduct } from '@/actions/product.action';
 import { getUser } from '@/actions/user.actions';
 import { Button } from '@/components/ui/button';
 import { IProduct } from '@/models/Product';
 import { IUser } from '@/models/User';
-import { Pencil, ShoppingBasket, Trash2 } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import React from 'react'
+import AddToCartButton from '@/components/product/add-to-cart-button';
+import DeleteProductButton from '@/components/product/delete-product-button';
+import ReviewList from './review-list';
+import { getReviews } from '@/actions/review.actions';
+import { IReview } from '@/models/Review';
+import ReviewForm from './review-form';
+
+function calculateAvgRating(reviews: IReview[]){
+  return reviews.length > 0 ? (reviews.reduce((total,review) => total + review.rating,0) / reviews.length).toFixed(2) : null
+}
 
 export default async function ProductPage({ params } : { params: { id: string }}) {
   const { id } = await params;
   const product: IProduct = await getProduct(id);
+  const reviews: IReview[] = await getReviews(product._id.toString());
+  const avgRating = calculateAvgRating(reviews);
   const session = await getSession();
   let user : IUser | null = null;
   if (session) user = await getUser(session?.email);
-
-  async function handleAdd() {
-    "use server"
-    if(!user) redirect('/login');
-    await addToCart(user._id.toString(), product._id.toString(), 1);
-  }
-
-  async function handleDeleteProduct() {
-    "use server";
-    await deleteProduct(product._id.toString());
-    redirect('/products');
-  }
 
   return (
     <main className="p-8 max-w-4xl mx-auto">
@@ -55,12 +53,7 @@ export default async function ProductPage({ params } : { params: { id: string }}
           <p className="mb-6">{product.description}</p>
 
           <div className="flex items-center gap-4">
-            <form action={handleAdd}>
-              <Button className=" px-6 py-2 rounded-lg cursor-pointer">
-                Add to Cart
-                <ShoppingBasket />
-              </Button>
-            </form>
+            <AddToCartButton user={user} product={product} />
             {user?.role === 'Seller' && 
               <div className="flex space-x-4">
                 <Link href={`/products/edit/${id}`}>
@@ -69,16 +62,23 @@ export default async function ProductPage({ params } : { params: { id: string }}
                     <Pencil />
                   </Button>
                 </Link>
-                <form action={handleDeleteProduct} className='w-fit'>
-                  <Button variant='destructive' className='rounded-md cursor-pointer'>
-                    <Trash2 />
-                  </Button>
-                </form>
+                <DeleteProductButton user={user} product={product} />
               </div>
             }
             <span className="text-gray-500">Stock: {product.stock}</span>
           </div>
+
+          {avgRating && (
+            <p className="text-yellow-500 font-medium mt-4">
+              ⭐ {avgRating} ({reviews.length} review{reviews.length > 1 ? "s" : ""})
+            </p>
+          )}
         </div>
+
+        {user && <ReviewForm userId={user._id.toString()} productId={product._id.toString()} />}
+      </div>
+      <div className="mt-12">
+        <ReviewList reviews={reviews} />
       </div>
     </main>
   )

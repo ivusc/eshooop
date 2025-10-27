@@ -12,14 +12,9 @@ Users
 - register
 - updater
 
-Cart
+Reviews:
 - Add
-- Edit
-- Remove
-
-Product
-- Add 
-- Edit
+- Update
 - View
 - Remove
 

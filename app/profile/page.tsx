@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { getSession } from "@/actions/auth.actions";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function ProfilePage() {
   const session = await getSession();
@@ -14,7 +15,7 @@ export default async function ProfilePage() {
 
   return (
     <main className="flex min-h-[70vh] items-center justify-center p-6">
-      <Card className="w-full max-w-md rounded-2xl shadow-none bg-background">
+      <Card className="w-full max-w-md rounded-2xl shadow-none bg-accent/10 border-none">
         <CardHeader className="flex flex-col items-center gap-4">
           <Avatar className="w-24 h-24">
             <AvatarImage
@@ -30,36 +31,38 @@ export default async function ProfilePage() {
         <Separator className="my-2" />
 
         <CardContent className="space-y-3">
-          {/* <div className="flex justify-between">
-            <span className="text-gray-500">Joined</span>
+          <div className="flex justify-between">
+            <span className="">Joined</span>
             <span className="font-medium">
               {new Date(user.createdAt).toLocaleDateString()}
             </span>
-          </div> */}
+          </div>
 
           <div className="flex justify-between">
-            <span className="text-gray-500">Status</span>
+            <span className="">Status</span>
             <span className="font-medium text-green-600">Active</span>
           </div>
 
           <div className="flex justify-between">
-            <span className="text-gray-500">User ID</span>
-            <span className="font-mono text-sm text-gray-700">
+            <span className="">User ID</span>
+            <span className="font-mono text-sm text-muted-foreground">
               {user._id.slice(-6).toUpperCase()}
             </span>
           </div>
 
           <div className="flex justify-between">
-            <span className="text-gray-500">Role</span>
-            <span className="font-mono text-sm text-gray-700">
+            <span className="">Role</span>
+            <span className="font-mono text-sm text-muted-foreground">
               {user.role}
             </span>
           </div>
 
           <div className="pt-4">
-            <Button variant="default" className="w-full">
-              Edit Profile
-            </Button>
+            <Link href='/profile/edit'>
+              <Button variant="default" className="w-full">
+                Edit Profile
+              </Button>
+            </Link>
           </div>
         </CardContent>
       </Card>
