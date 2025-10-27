@@ -58,7 +58,7 @@ export async function loginUser(email: string, password: string) {
   }
 
   //create the session
-  const session = await encrypt({ email: user.email, username: user.username });
+  const session = await encrypt({ email: user.email, username: user.username, id: user._id.toString() });
 
   //save the session in a cookie
   (await cookies()).set("session", session, {
@@ -125,6 +125,7 @@ export async function resetPassword(token: string, newPassword: string) {
 export async function getSession() {
   const session = (await cookies()).get("session")?.value;
   if (!session) return null;
+  //console.log(await decrypt(session))
 
   return await decrypt(session);
 }

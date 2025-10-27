@@ -6,16 +6,17 @@ import { Button } from "@/components/ui/button";
 import { getSession } from "@/actions/auth.actions";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { IUser } from "@/models/User";
 
 export default async function ProfilePage() {
   const session = await getSession();
-  const user = await getUser(session.email);
+  const user : IUser = await getUser(session.email);
 
-  if (!user) redirect('/')
+  if (!user) redirect('/login');
 
   return (
     <main className="flex min-h-[70vh] items-center justify-center p-6">
-      <Card className="w-full max-w-md rounded-2xl shadow-none bg-accent/10 border-none">
+      <Card className="w-full max-w-md rounded-2xl shadow-none bg-background">
         <CardHeader className="flex flex-col items-center gap-4">
           <Avatar className="w-24 h-24">
             <AvatarImage
@@ -46,7 +47,7 @@ export default async function ProfilePage() {
           <div className="flex justify-between">
             <span className="">User ID</span>
             <span className="font-mono text-sm text-muted-foreground">
-              {user._id.slice(-6).toUpperCase()}
+              {user._id.toString().slice(-6).toUpperCase()}
             </span>
           </div>
 

@@ -1,15 +1,50 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import localFont from 'next/font/local';
 import "./globals.css";
 import Navbar from "@/components/shared/navbar";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
-  weight: ['100','200','300','400','500','600','700','800','900'],
-  subsets: ["latin"],
-});
+const miSans = localFont({
+  src: [
+    {
+      path: '../public/fonts/MiSansLatin-ExtraLight.woff2',
+      weight: '100',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/MiSansLatin-Light.woff2',
+      weight: '200',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/MiSansLatin-Medium.woff2',
+      weight: '300',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/MiSansLatin-Demibold.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/MiSansLatin-Semibold.woff2',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/MiSansLatin-Bold.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/MiSansLatin-Heavy.woff2',
+      weight: '800',
+      style: 'normal',
+    }
+  ],
+  variable: '--font-misans',
+})
 
 export const metadata: Metadata = {
   title: "eshooop",
@@ -23,7 +58,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-        <body className={`${poppins.className} antialiased`}>
+        <body className={`${miSans.className} antialiased`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

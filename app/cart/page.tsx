@@ -31,7 +31,7 @@ export default async function CartPage() {
         <CartItem key={item.product._id.toString()} userId={cart.user.toString()} item={item} />
       ))}
 
-      <Card className="p-4 px-12 mt-6 flex flex-row justify-between items-center">
+      <Card className="p-4 px-12 mt-6 flex flex-row justify-between items-center bg-background">
         <p className="font-semibold text-lg">Total</p>
         <p className="font-semibold text-lg">${cart.totalPrice.toFixed(2)}</p>
       </Card>

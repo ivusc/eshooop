@@ -18,6 +18,15 @@ Reviews:
 - View
 - Remove
 
+Admin:
+- Products CRUD
+- View all products
+- Adjust product stocks
+- Update Order Status
+- View All Orders
+- View All Users
+- Total Revenue
+
 Checkout function stripe, search bar
 Edit profile
 

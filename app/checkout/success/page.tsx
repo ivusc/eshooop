@@ -1,23 +1,20 @@
 import { getSession } from "@/actions/auth.actions";
-import { getOrder } from "@/actions/order.actions";
-import { getUser } from "@/actions/user.actions";
+import { getLastOrder } from "@/actions/order.actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { connectToDatabase } from "@/lib/mongodb";
 import { IOrder, IOrderItem } from "@/models/Order";
 import { IProduct } from "@/models/Product";
-import { IUser } from "@/models/User";
 import { Home } from "lucide-react";
 import Link from "next/link";
 
 export default async function SuccessPage() {
   const session = await getSession();
-  const user : IUser = await getUser(session.email);
 
   await connectToDatabase();
 
-  const order : IOrder | null = await getOrder(user._id.toString())
+  const order : IOrder | null = await getLastOrder(session.id)
 
   if (!order)
     return (

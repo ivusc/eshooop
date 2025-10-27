@@ -1,4 +1,4 @@
-import mongoose, { Schema, models } from "mongoose";
+import mongoose, { Document, Schema, models } from "mongoose";
 import { IProduct } from "./Product";
 
 export interface ICartItem {
@@ -6,7 +6,7 @@ export interface ICartItem {
   quantity: number;
 }
 
-export interface ICart {
+export interface ICart extends Document {
   _id: mongoose.Types.ObjectId;
   user: mongoose.Types.ObjectId;
   items: ICartItem[];

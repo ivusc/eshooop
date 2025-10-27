@@ -23,7 +23,7 @@ export function CartItem({ userId, item }: { userId: string; item: ICartItem }) 
   }
 
   return (
-    <Card className="flex flex-row items-center justify-between p-4 px-12 shadow-sm">
+    <Card className="flex flex-row items-center justify-between p-4 px-12 shadow-sm bg-background">
       <div className="flex items-center gap-4">
         <Image
           width={128}
