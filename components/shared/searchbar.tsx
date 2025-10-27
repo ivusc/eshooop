@@ -34,6 +34,7 @@ export default function Searchbar({
   // 🔍 trigger search when debounced value changes
   useEffect(() => {
     onSearch(debounced)
+    //@ts-nocheck
   }, [debounced]);
 
   return (

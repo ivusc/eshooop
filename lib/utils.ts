@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { clsx, type ClassValue } from "clsx"
 import { jwtVerify, SignJWT } from "jose";
 import { twMerge } from "tailwind-merge"

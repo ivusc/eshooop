@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { forgotPassword } from "@/actions/auth.actions";
 import { Button } from "@/components/ui/button";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
