@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import Searchbar from '../shared/searchbar'
+import Searchbar from '@/components/shared/searchbar'
 import { IProduct } from '@/models/Product'
 import { IUser } from '@/models/User';
 import ProductCard from './product-card';

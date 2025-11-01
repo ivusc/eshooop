@@ -20,12 +20,14 @@ export function Hero() {
           duration: 0.5,
           ease: [0.4, 0.0, 0.2, 1],
         }}
-        className="text-2xl px-4 md:text-4xl lg:text-5xl font-bold text-neutral-700 dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto "
+        className="text-lg px-4 md:text-4xl lg:text-3xl font-bold text-neutral-700 dark:text-white max-w-5xl leading-relaxed lg:leading-snug text-center mx-auto "
       >
-        Every product is a reflection,<br/>
-        <Highlight className="text-black dark:text-white">
-          polished and priced
-        </Highlight>.
+        Discover millions of products from trusted sellers worldwide.<br/>
+        Get the
+        <Highlight className="text-black dark:text-white">best deals</Highlight>,&nbsp;
+        <Highlight className="text-black dark:text-white">fastest shipping</Highlight>,&nbsp;and&nbsp;
+        <Highlight className="text-black dark:text-white">premium quality</Highlight><br/>
+        all in one place.
       </motion.h1>
       <motion.div 
         initial={{
@@ -42,7 +44,7 @@ export function Hero() {
         }}
         className="flex items-center justify-center pt-4">
         <Link href='/products'>
-          <Button>Products</Button>
+          <Button size={'lg'}>Products</Button>
         </Link>
       </motion.div>
     </HeroHighlight>

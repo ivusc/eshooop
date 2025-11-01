@@ -1,11 +1,11 @@
 import { getSession } from '@/actions/auth.actions'
-import { User } from 'lucide-react'
+import { ShoppingBag, User } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
-import { Button } from '../ui/button'
+import { Button } from '../../ui/button'
 import { navLinks } from '@/lib/constants'
-import LogoutForm from '../forms/auth/logout-form'
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '../ui/navigation-menu'
+import LogoutForm from './logout-form'
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '../../ui/navigation-menu'
 import { getTotalItemsInCart } from '@/actions/cart.actions'
 import { getTotalOrders } from '@/actions/order.actions'
 import { ISession } from '@/lib/types'
@@ -24,7 +24,7 @@ export default async function Navbar() {
   return (
     <nav className="flex flex-row justify-between items-center md:px-12 px-4 bg-opacity-50 py-4 top-0 sticky backdrop-blur-lg h-[10vh] z-20 w-full">
       <Link href="/" className='flex flex-row justify-center items-center space-x-4'>
-        <p className="font-bold text-lg">eShooop</p>
+        <p className="font-bold text-lg flex"><ShoppingBag />&nbsp;eShooop</p>
       </Link>
       <div className='hidden md:flex flex-row items-center space-x-4'>
         <NavigationMenu>
@@ -47,7 +47,7 @@ export default async function Navbar() {
           ))}
           </NavigationMenuList>
         </NavigationMenu>
-
+        
         {session !== null ? (
           <>
             <Link href='/cart' className='flex flex-row items-center justify-center space-x-4 hover:bg-accent rounded-md px-4 py-2'>

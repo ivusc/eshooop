@@ -8,8 +8,8 @@ import { Pencil } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
-import AddToCartButton from '@/components/product/add-to-cart-button';
-import DeleteProductButton from '@/components/product/delete-product-button';
+import AddToCartButton from '../_components/add-to-cart-button';
+import DeleteProductButton from '../_components/delete-product-button';
 import ReviewList from './review-list';
 import { getReviews } from '@/actions/review.actions';
 import { IReview } from '@/models/Review';

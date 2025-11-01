@@ -1,14 +1,15 @@
-import { getSession } from "@/actions/auth.actions";
-import { Hero } from "./hero";
+import { Hero } from "./_components/hero";
+import About from "./_components/about";
+import USP from "./_components/usp";
+import TestimonialMarquee from "./_components/testimonial";
 
 export default async function Home() {
-  const session = await getSession();
-  console.log(session)
-  
   return (
     <div className="w-full">
-      <pre className="text-black">{session?.username}: {session?.email}</pre>
       <Hero/>
+      <About/>
+      <USP/>
+      <TestimonialMarquee />
     </div>
   );
 }

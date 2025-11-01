@@ -75,6 +75,7 @@ export default function LoginForm() {
                 <Input
                   placeholder="Enter your password"
                   type="password"
+                  className="tracking-tight"
                   {...field}
                 />
               </FormControl>

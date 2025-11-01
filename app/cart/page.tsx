@@ -3,9 +3,9 @@ import { getSession } from "@/actions/auth.actions";
 import { getUser } from "@/actions/user.actions";
 import { redirect } from "next/navigation";
 import { ICart, ICartItem } from "@/models/Cart";
-import CheckoutButton from "./checkout-button";
+import CheckoutButton from "./_components/checkout-button";
 import { Card } from "@/components/ui/card";
-import { CartItem } from "@/app/cart/cart-item";
+import { CartItem } from "@/app/cart/_components/cart-item";
 import { IUser } from "@/models/User";
 
 export default async function CartPage() {

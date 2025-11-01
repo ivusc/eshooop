@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import localFont from 'next/font/local';
 import "./globals.css";
-import Navbar from "@/components/shared/navbar";
+import Navbar from "@/components/shared/navbar/navbar";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
+import Footer from "@/components/shared/footer";
 
 const miSans = localFont({
   src: [
@@ -65,7 +66,6 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Navbar />
             {children}
             <Toaster />
           </ThemeProvider>

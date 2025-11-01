@@ -2,9 +2,9 @@ import { addToCart, removeFromCart } from '@/actions/cart.actions';
 import { ICartItem } from '@/models/Cart';
 import { IProduct } from '@/models/Product';
 import React from 'react'
-import { Card } from '../../components/ui/card';
+import { Card } from '../../../components/ui/card';
 import Image from 'next/image';
-import { Button } from '../../components/ui/button';
+import { Button } from '../../../components/ui/button';
 import { revalidatePath } from 'next/cache';
 
 export function CartItem({ userId, item }: { userId: string; item: ICartItem }) {

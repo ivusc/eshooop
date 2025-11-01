@@ -3,10 +3,10 @@ import { IUser } from '@/models/User'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { Button } from '../ui/button'
+import { Button } from '@/components/ui/button'
 import { Pencil } from 'lucide-react'
-import AddToCartButton from '@/components/product/add-to-cart-button'
-import DeleteProductButton from '@/components/product/delete-product-button'
+import AddToCartButton from './add-to-cart-button'
+import DeleteProductButton from './delete-product-button'
 
 export default function ProductCard({ product, user } : { product: IProduct, user: IUser }) {
   return (
