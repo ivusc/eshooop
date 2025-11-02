@@ -6,6 +6,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import AddToCartButton from "./add-to-cart-button";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 
 export default function ProductCard({
   product,
@@ -17,9 +18,9 @@ export default function ProductCard({
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div
+    <Card
       key={product._id.toString()}
-      className="flex flex-col rounded-xl overflow-hidden hover:bg-accent/70 border cursor-pointer transition pb-4"
+      className="flex flex-col rounded-xl overflow-hidden border-none bg-accent/70 hover:bg-accent pt-0 cursor-pointer transition pb-4"
     >
       <Link href={`/products/${product._id}`}>
         {product.pictures?.[0] && (
@@ -33,7 +34,7 @@ export default function ProductCard({
               alt={product.name}
               fill
               className={`object-contain ${
-                isHovered ? "scale-105 rotate-6" : "scale-100"
+                isHovered ? "scale-105" : "scale-100"
               } transition-all duration-500 p-4`}
             />
           </div>
@@ -71,6 +72,6 @@ export default function ProductCard({
           <AddToCartButton user={user} product={product} />
         }
       </div>
-    </div>
+    </Card>
   );
 }

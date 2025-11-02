@@ -82,8 +82,8 @@ export const landingPageData = {
   discover: {
     title: "Discover What Feels Familiar",
     description: `
-      Explore a collection of modern essentials, design pieces, and digital-daydream objects.  
-      From your workspace to your daily rituals, every product in Eshooop exists to make the ordinary feel cinematic again.  
+      Explore a collection of modern essentials, design pieces, and digital-daydream objects.<br/><br/> 
+      From your workspace to your daily rituals, every product in Eshooop exists to make the ordinary feel cinematic again.<br/><br/>
       Rediscover what you've been missing — or maybe what you've always known.
     `,
     cta: "Start Discovering"
