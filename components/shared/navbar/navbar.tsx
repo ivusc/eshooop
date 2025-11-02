@@ -32,7 +32,7 @@ export default async function Navbar() {
           {navLinks.map((link) => (
             <NavigationMenuItem key={link.label}>
               <Link href={link.link}>
-                {link.sublinks ? <NavigationMenuTrigger>{link.label}</NavigationMenuTrigger> : 
+                {(link.sublinks && session) ? <NavigationMenuTrigger>{link.label}</NavigationMenuTrigger> : 
                   <p className='px-4 py-2 hover:bg-accent/20 rounded-lg text-sm'>{link.label}</p>
                 }
               </Link>

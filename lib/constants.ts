@@ -97,13 +97,13 @@ export const footerData = {
   },
   links: {
     shop: [
-      { label: "All Products", href: "#" },
+      { label: "All Products", href: "/products" },
       { label: "Best Sellers", href: "#" },
       { label: "New Arrivals", href: "#" },
       { label: "Deals", href: "#" }
     ],
     company: [
-      { label: "About Us", href: "#" },
+      { label: "About Us", href: "/#about" },
       { label: "Careers", href: "#" },
       { label: "Press", href: "#" },
       { label: "Contact", href: "#" }
@@ -112,7 +112,7 @@ export const footerData = {
       { label: "Help Center", href: "#" },
       { label: "Shipping Info", href: "#" },
       { label: "Returns", href: "#" },
-      { label: "Track Order", href: "#" }
+      { label: "Track Order", href: "/orders" }
     ],
     legal: [
       { label: "Privacy Policy", href: "#" },

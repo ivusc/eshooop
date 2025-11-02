@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 export default function About() {
   return (
-    <div className='mx-48 space-y-6 my-12 flex items-center h-[60vh]'>
+    <section id='about' className='mx-48 space-y-6 my-12 flex items-center h-[60vh]'>
       <div className='grid grid-cols-12'>
         <div className="col-span-6">
           <Image src={aboutImage} width={400} height={400} className='rounded-xl overflow-hidden select-none pointer-events-none' alt='about image'/>
@@ -15,6 +15,6 @@ export default function About() {
           <div className='text-pretty' dangerouslySetInnerHTML={{ __html: landingPageData.about.description }} />
         </div>
       </div>
-    </div>
+    </section>
   )
 }

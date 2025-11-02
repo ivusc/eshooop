@@ -26,9 +26,9 @@ export default function AddToCartButton({ user, product } : { user: IUser | null
 
   return (
     <form onSubmit={handleAddToCart}>
-      <Button className=" px-6 py-2 rounded-lg cursor-pointer">
-        Add to Cart
+      <Button size='sm' className="w-full px-6 py-2 rounded-lg cursor-pointer">
         <ShoppingBasket />
+        +
       </Button>
     </form>
   )

@@ -15,7 +15,7 @@ export default function ProductsPage({ initialProducts, user } : { initialProduc
   }
 
   return (
-    <div className='w-full space-y-4'>
+    <div className='space-y-4 my-8 mx-24'>
       <Searchbar placeholder='Search for products...' onSearch={handleSearch} />
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
         {products.map((product: IProduct) => (

@@ -4,10 +4,12 @@ import { ISession } from '@/lib/types';
 import { IOrder, IOrderItem } from '@/models/Order';
 import { IProduct } from '@/models/Product';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import React from 'react'
 
 export default async function Page() {
   const session : ISession = await getSession();
+  if(!session) redirect('/login')
   const orders = await getOrdersByUser(session.id);
 
   return (

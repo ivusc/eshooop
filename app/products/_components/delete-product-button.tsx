@@ -24,7 +24,7 @@ export default function DeleteProductButton({ user, product } : { user: IUser | 
 
   return (
     <form onSubmit={handleDeleteProduct} className='w-fit'>
-      <Button variant='destructive' className='rounded-md cursor-pointer'>
+      <Button variant='destructive' size='sm' className='w-full rounded-md cursor-pointer'>
         <Trash2 />
       </Button>
     </form>
