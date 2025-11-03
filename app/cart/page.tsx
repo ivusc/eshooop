@@ -4,7 +4,6 @@ import { getUser } from "@/actions/user.actions";
 import { redirect } from "next/navigation";
 import { ICart, ICartItem } from "@/models/Cart";
 import CheckoutButton from "./_components/checkout-button";
-import { Card } from "@/components/ui/card";
 import { CartItem } from "@/app/cart/_components/cart-item";
 import { IUser } from "@/models/User";
 
@@ -31,10 +30,10 @@ export default async function CartPage() {
         <CartItem key={item.product._id.toString()} userId={cart.user.toString()} item={item} />
       ))}
 
-      <Card className="p-4 px-12 mt-6 flex flex-row justify-between items-center bg-background">
-        <p className="font-semibold text-lg">Total</p>
-        <p className="font-semibold text-lg">${cart.totalPrice.toFixed(2)}</p>
-      </Card>
+      <div className="p-4 px-12 mt-6 border-none flex flex-row justify-between items-center">
+        <p className="font-semibold text-2xl">Total</p>
+        <p className="font-semibold text-2xl">${cart.totalPrice.toFixed(2)}</p>
+      </div>
 
       <CheckoutButton userId={user._id.toString()}/>
     </main>

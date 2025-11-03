@@ -13,10 +13,15 @@ export default function ReviewList({ reviews } : { reviews : IReview[] }) {
           <p className="text-muted-foreground">No reviews yet.</p>
         ) : (
           reviews.map((r) => (
-            <Card key={r._id.toString()} className='w-4xl'>
-              <CardContent className="p-4 space-y-2">
+            <Card key={r._id.toString()} className='w-4xl border-none bg-accent/70 hover:bg-accent'>
+              <CardContent className="px-12 py-4 space-y-6">
                 <div className="flex justify-between items-center">
-                  <p className="font-medium">{(r.user as IUser).username || "Anonymous"}</p>
+                  <div className='space-x-4 flex items-center'>
+                    <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
+                      {(r.user as IUser).username.charAt(0)}
+                    </div>
+                    <p className="font-medium">{(r.user as IUser).username || "Anonymous"}</p>
+                  </div>
                   <div className="flex">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star

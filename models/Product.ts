@@ -8,6 +8,9 @@ export interface IProduct {
   category: string;
   stock: number;
   pictures: string[];
+  reviewCount: number;
+  avgRating: number;
+  discountedPrice: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -17,8 +20,11 @@ const ProductSchema = new Schema<IProduct>(
     name: { type: String, required: true },
     description: { type: String },
     price: { type: Number, required: true },
+    discountedPrice: { type: Number },
     category: { type: String },
     stock: { type: Number, default: 0 },
+    reviewCount: { type: Number, default: 0 },
+    avgRating: { type: Number, default: 5 },
     pictures: [{ type: String }],
   },
   { timestamps: true }
@@ -27,3 +33,4 @@ const ProductSchema = new Schema<IProduct>(
 const Product = models.Product || model("Product", ProductSchema);
 
 export default Product;
+

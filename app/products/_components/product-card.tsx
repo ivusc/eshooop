@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import AddToCartButton from "./add-to-cart-button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import ProductRating from "./product-rating";
 
 export default function ProductCard({
   product,
@@ -40,28 +41,11 @@ export default function ProductCard({
           </div>
         )}
         <div className="px-4 py-2 space-y-2">
-          <Badge className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-0 rounded-xs text-xs">
+          <Badge className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-0 rounded-md text-xs">
             {product.category.toUpperCase()}
           </Badge>
           <h2 className="text-base font-semibold">{product.name}</h2>
-          <div className="flex items-center gap-2">
-            <div className="flex items-center">
-              {[...Array(5)].map((_, i) => (
-                <span
-                  key={i}
-                  className={`text-sm ${
-                    i < Math.floor(4.5) ? "text-yellow-400" : "text-gray-600"
-                  }`}
-                >
-                  ★
-                </span>
-              ))}
-            </div>
-            <span className="text-sm text-gray-400">
-              {4.5} <span className="text-gray-600">({123})</span>
-            </span>
-          </div>
-          
+          <ProductRating productRating={product.avgRating} reviewCount={product.reviewCount}/>        
         </div>
       </Link>
       <div className="flex space-x-1 justify-between items-center mx-4">

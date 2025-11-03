@@ -6,6 +6,7 @@ import { Card } from '../../../components/ui/card';
 import Image from 'next/image';
 import { Button } from '../../../components/ui/button';
 import { revalidatePath } from 'next/cache';
+import Link from 'next/link';
 
 export function CartItem({ userId, item }: { userId: string; item: ICartItem }) {
   const product = item.product as IProduct;
@@ -23,17 +24,21 @@ export function CartItem({ userId, item }: { userId: string; item: ICartItem }) 
   }
 
   return (
-    <Card className="flex flex-row items-center justify-between p-4 px-12 shadow-sm bg-background">
+    <Card className="flex flex-row items-center justify-between p-4 px-12 shadow-sm border-none bg-accent/70 hover:bg-accent">
       <div className="flex items-center gap-4">
-        <Image
-          width={128}
-          height={128}
-          src={product.pictures?.[0] || "/placeholder.png"}
-          alt={product.name}
-          className="w-20 h-20 object-cover rounded-md"
-        />
+        <div className="w-24 rounded-md h-full bg-zinc-100">
+          <Image
+            width={128}
+            height={128}
+            src={product.pictures?.[0] || "/placeholder.png"}
+            alt={product.name}
+            className="p-2 object-cover rounded-md"
+          />
+        </div>
         <div>
-          <h2 className="font-semibold">{product.name}</h2>
+          <Link className='hover:text-indigo-400' href={`/products/${product._id.toString()}`}>
+            <h2 className="font-semibold">{product.name}</h2>
+          </Link>
           <p className="text-sm text-gray-500">${product.price}</p>
           <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
         </div>

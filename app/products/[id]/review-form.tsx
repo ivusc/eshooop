@@ -2,11 +2,11 @@
 import { createReview } from '@/actions/review.actions'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Star } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod'
@@ -24,6 +24,8 @@ const reviewSchema = z.object({
 
 export default function ReviewForm({ userId, productId } : { userId: string, productId: string }) {
   const router = useRouter();
+  const [hovered, setHovered] = useState<number | null>(null);
+
   const createReviewForm = useForm<z.infer<typeof reviewSchema>>({
       resolver: zodResolver(reviewSchema),
       defaultValues: {
@@ -38,6 +40,7 @@ export default function ReviewForm({ userId, productId } : { userId: string, pro
 
     if (res.success){
       toast.success("Review created successfully.");
+      createReviewForm.reset();
       router.refresh();
     } else {
       toast.error(res.message);
@@ -55,15 +58,23 @@ export default function ReviewForm({ userId, productId } : { userId: string, pro
             <FormItem>
               <FormLabel>Rating</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Enter product rating"
-                  type="number"
-                  className='w-4xl'
-                  min={1}
-                  max={5}
-                  onKeyDown={() => false}
-                  {...field}
-                />
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      size={28}
+                      className={`cursor-pointer transition-colors ${
+                        (hovered ?? Number(createReviewForm.watch("rating"))) >= star
+                          ? "fill-yellow-400 text-yellow-400"
+                          : "text-gray-300"
+                      }`}
+                      onMouseEnter={() => setHovered(star)}
+                      onMouseLeave={() => setHovered(null)}
+                      onClick={() => createReviewForm.setValue("rating", star.toString())}
+                      {...field}
+                    />
+                  ))}
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

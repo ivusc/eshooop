@@ -1,5 +1,6 @@
 import { getSession } from '@/actions/auth.actions';
 import { getOrdersByUser } from '@/actions/order.actions';
+import { Card } from '@/components/ui/card';
 import { ISession } from '@/lib/types';
 import { IOrder, IOrderItem } from '@/models/Order';
 import { IProduct } from '@/models/Product';
@@ -20,7 +21,7 @@ export default async function Page() {
       ) : (
         <ul className="space-y-6">
           {orders.map((order: IOrder) => (
-            <li key={order._id.toString()} className="border p-4 rounded-xl shadow-sm">
+            <Card key={order._id.toString()} className="border-none hover:bg-accent bg-accent/70 p-4 rounded-xl shadow-sm">
               <Link
                 href={`/orders/${order._id.toString()}`}
                 className="block hover:bg-muted/30 transition rounded-lg p-2"
@@ -43,7 +44,7 @@ export default async function Page() {
                 Total: ${order.total.toFixed(2)}
               </div>
               </Link>
-            </li>
+            </Card>
           ))}
         </ul>
       )}
