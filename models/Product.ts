@@ -15,7 +15,7 @@ export interface IProduct {
   updatedAt: Date;
 }
 
-const ProductSchema = new Schema<IProduct>(
+export const ProductSchema = new Schema<IProduct>(
   {
     name: { type: String, required: true },
     description: { type: String },

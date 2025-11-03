@@ -112,7 +112,7 @@ export const footerData = {
       { label: "Help Center", href: "#" },
       { label: "Shipping Info", href: "#" },
       { label: "Returns", href: "#" },
-      { label: "Track Order", href: "/orders" }
+      { label: "Track Order", href: "/profile#orders" }
     ],
     legal: [
       { label: "Privacy Policy", href: "#" },

@@ -39,7 +39,7 @@ export function CartItem({ userId, item }: { userId: string; item: ICartItem }) 
           <Link className='hover:text-indigo-400' href={`/products/${product._id.toString()}`}>
             <h2 className="font-semibold">{product.name}</h2>
           </Link>
-          <p className="text-sm text-gray-500">${product.price}</p>
+          <p className="text-sm bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text w-fit text-transparent">${product.price}</p>
           <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
         </div>
       </div>

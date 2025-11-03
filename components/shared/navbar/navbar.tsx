@@ -53,13 +53,10 @@ export default async function Navbar() {
             <Link href='/cart' className='flex flex-row items-center justify-center space-x-4 hover:bg-accent rounded-md px-4 py-2'>
               <p className='font-medium'>Cart 🛒 ({cartItemsTotal?.toString()})</p>
             </Link>
-            <Link href='/orders' className='flex flex-row items-center justify-center space-x-4 hover:bg-accent rounded-md px-4 py-2'>
-              <p className='font-medium'>Orders 🚚 ({orderItemsTotal?.toString()})</p>
-            </Link>
             <div className='flex flex-row justify-between items-center space-x-4 hover:bg-accent p-2 rounded-md cursor-pointer'>
               <Link href='/profile' className='flex flex-row'>
                 <User />
-                <p>{session.username}</p>
+                <p>{session.username} ({orderItemsTotal?.toString()})</p>
               </Link>
             </div>
             <LogoutForm />

@@ -16,6 +16,16 @@ export async function getReviews(productId: string) {
   return JSON.parse(JSON.stringify(reviews));
 }
 
+export async function getReviewsByUser(userId: string) {
+  await connectToDatabase();
+
+  const reviews = await Review.find({ user: userId })
+    .sort({ createdAt: -1 })
+    .lean();
+
+  return JSON.parse(JSON.stringify(reviews));
+}
+
 export async function createReview(userId: string, productId: string, rating: number, comment: string) {
   await connectToDatabase();
 

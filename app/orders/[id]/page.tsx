@@ -19,7 +19,7 @@ export default async function Page({ params } : { params: { id: string }}) {
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-12">
       <Link
-        href="/orders"
+        href="/profile"
         className="text-sm text-muted-foreground hover:underline"
       >
         ← Back to Orders
