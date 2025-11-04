@@ -1,4 +1,4 @@
-import { getUser } from "@/actions/user.actions";
+import { getFullUserDetails } from "@/actions/user.actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -9,11 +9,14 @@ import { IUser } from "@/models/User";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-import { getOrdersByUser } from "@/actions/order.actions";
+import { getOrdersByUser, getTotalOrders } from "@/actions/order.actions";
 import { IOrder } from "@/models/Order";
 import OrderCard from "./_components/order-card";
 import { getReviewsByUser } from "@/actions/review.actions";
 import { IReview } from "@/models/Review";
+import SavedItems from "./_components/saved-items";
+import AddressList from "./_components/address-list";
+import { IProduct } from "@/models/Product";
 
 const userData = {
   profile: {
@@ -91,11 +94,14 @@ const userData = {
 
 export default async function ProfilePage() {
   const session = await getSession();
-  const user : IUser = await getUser(session.email);
+  if (!session) redirect('/login');
+
+  const user : IUser = await getFullUserDetails(session.email);
   const reviews: IReview[] = await getReviewsByUser(session.id);
   const orders : IOrder[] = await getOrdersByUser(session.id);
+  const ordersStats = await getTotalOrders(session.id);
 
-  if (!user) redirect('/login');
+  //console.log(user)
 
   // const getStatusColor = (status:string) => {
   //   switch(status) {
@@ -118,7 +124,7 @@ export default async function ProfilePage() {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="2xl:max-w-4xl xl:max-w-5xl mx-auto px-6 py-8">
         {/* Profile Header */}
         <Card className="bg-accent/70 backdrop-blur-sm border-none mb-8">
           <CardContent className="p-8">
@@ -144,7 +150,7 @@ export default async function ProfilePage() {
                   </Badge>
                 </div>
                 <p className="text-gray-400 mb-1">{user.email}</p>
-                <p className="text-gray-400 mb-3">{userData.profile.phone}</p>
+                <p className="text-gray-400 mb-3">{user.phone}</p>
                 <p className="text-sm text-gray-500">Member since {new Date(user.createdAt).toLocaleString()}</p>
               </div>
 
@@ -164,19 +170,19 @@ export default async function ProfilePage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               <div className="flex flex-col items-center">
                 <div className="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 w-fit bg-clip-text text-transparent">
-                  {orders.length}
+                  {ordersStats.count}
                 </div>
                 <div className="text-sm text-gray-400 mt-1">Total Orders</div>
               </div>
               <div className="flex flex-col items-center">
                 <div className="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 w-fit bg-clip-text text-transparent">
-                  ${userData.stats.totalSpent}
+                  ${ordersStats.total}
                 </div>
                 <div className="text-sm text-gray-400 mt-1">Total Spent</div>
               </div>
               <div className="flex flex-col items-center">
                 <div className="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 w-fit bg-clip-text text-transparent">
-                  {userData.stats.savedItems}
+                  {user.savedProducts.length}
                 </div>
                 <div className="text-sm text-gray-400 mt-1">Saved Items</div>
               </div>
@@ -195,7 +201,7 @@ export default async function ProfilePage() {
           <TabsList className="bg-accent/70 border-none border  mb-6">
             <TabsTrigger value="orders" className="data-[state=active]:bg-purple-600">Orders ({orders.length})</TabsTrigger>
             <TabsTrigger value="addresses" className="data-[state=active]:bg-purple-600">Addresses</TabsTrigger>
-            <TabsTrigger value="saved" className="data-[state=active]:bg-purple-600">Saved Items ({userData.savedItems.length})</TabsTrigger>
+            <TabsTrigger value="saved" className="data-[state=active]:bg-purple-600">Saved Items ({user.savedProducts.length})</TabsTrigger>
             <TabsTrigger value="settings" className="data-[state=active]:bg-purple-600">Settings</TabsTrigger>
           </TabsList>
 
@@ -210,72 +216,12 @@ export default async function ProfilePage() {
 
           {/* Addresses Tab */}
           <TabsContent value="addresses">
-            <div className="grid md:grid-cols-2 gap-6">
-              {userData.addresses.map((address) => (
-                <Card key={address.id} className="bg-accent/70 border-none backdrop-blur-sm  hover:border-purple-500/50 transition-all">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-white flex items-center gap-2">
-                        {address.label}
-                        {address.isDefault && (
-                          <Badge className="bg-purple-600 text-white border-0">Default</Badge>
-                        )}
-                      </CardTitle>
-                      <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-                        Edit
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-gray-300 space-y-1">
-                      <p className="font-semibold">{address.name}</p>
-                      <p>{address.street}</p>
-                      <p>{address.city}, {address.state} {address.zip}</p>
-                      <p>{address.country}</p>
-                    </div>
-                    {!address.isDefault && (
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="mt-4  text-white hover:bg-gray-800"
-                      >
-                        Set as Default
-                      </Button>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
-              <Card className="bg-accent/70 backdrop-blur-sm  border-dashed hover:border-purple-500/50 transition-all cursor-pointer flex items-center justify-center min-h-[250px]">
-                <CardContent className="text-center">
-                  <div className="text-6xl text-gray-600 mb-4">+</div>
-                  <p className="text-gray-400">Add New Address</p>
-                </CardContent>
-              </Card>
-            </div>
+            <AddressList userData={userData} />
           </TabsContent>
 
           {/* Saved Items Tab */}
           <TabsContent value="saved">
-            <div className="grid md:grid-cols-3 gap-6">
-              {userData.savedItems.map((item) => (
-                <Card key={item.id} className="bg-accent/70 border-none backdrop-blur-sm  hover:border-purple-500/50 transition-all">
-                  <CardContent className="p-6">
-                    <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-lg p-8 mb-4 flex items-center justify-center h-40">
-                      <div className="text-6xl">{item.image}</div>
-                    </div>
-                    <h3 className="text-lg font-semibold text-white mb-2">{item.name}</h3>
-                    <div className="flex items-center justify-between">
-                      <span className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                        ${item.price}
-                      </span>
-                      <Button size="sm">
-                        Add to Cart
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <SavedItems items={user.savedProducts as IProduct[]} user={user}/>
           </TabsContent>
 
           {/* Settings Tab */}

@@ -18,7 +18,7 @@ export default function OrderCard({ order } : { order: IOrder }) {
         <div className="flex items-center gap-3 mb-3">
           <h3 className="font-medium">Order #{order._id.toString().slice(-6).toUpperCase()}</h3>
           <Badge className={`bg-green-600 text-white border-0`}>
-            {order.paymentStatus.toUpperCase()}
+            {order.status.toUpperCase()}
           </Badge>
         </div>
         <p className="text-sm text-gray-500 mb-4">
@@ -44,7 +44,7 @@ export default function OrderCard({ order } : { order: IOrder }) {
           <span className='bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text w-fit text-transparent'>${order.total.toFixed(2)}</span>
         </div>
         <div className="flex gap-2">
-          {order.paymentStatus === 'paid' && (
+          {order.status === 'paid' && (
             <Button size="sm">
               Buy Again
             </Button>

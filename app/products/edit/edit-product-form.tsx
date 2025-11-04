@@ -179,6 +179,7 @@ export default function EditProductForm({
             <div className="flex flex-col space-y-4" key={index}>
               <div key={field.id} className="flex flex-row space-x-4">
                 <Input
+                  type='url'
                   placeholder="Enter picture links"
                   {...editProductForm.register(
                     `pictures.${index}.url` as const,

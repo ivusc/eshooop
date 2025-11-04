@@ -10,7 +10,7 @@ export interface IOrder {
   user: mongoose.Types.ObjectId,
   items: IOrderItem[],
   total: number,
-  paymentStatus: "pending" | "paid" | "failed",
+  status: "pending" | "paid" | "failed" | "ship" | "delivered" | "cancelled",
   stripeSessionId: string,
   createdAt: Date,
   updatedAt: Date
@@ -48,9 +48,9 @@ const OrderSchema = new Schema<IOrder>(
       type: Number,
       required: true,
     },
-    paymentStatus: {
+    status: {
       type: String,
-      enum: ["pending", "paid", "failed"],
+      enum: ["pending", "paid", "failed", "shipped", "delivered", "cancelled"],
       default: "pending",
     },
     stripeSessionId: {

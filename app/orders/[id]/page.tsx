@@ -17,7 +17,7 @@ export default async function Page({ params } : { params: { id: string }}) {
   const order = await getOrder(session.id, id);
 
   return (
-    <div className="max-w-3xl mx-auto p-6 space-y-12">
+    <div className="max-w-3xl mx-auto p-6 space-y-12 min-h-[70vh]">
       <Link
         href="/profile"
         className="text-sm text-muted-foreground hover:underline"
@@ -25,7 +25,7 @@ export default async function Page({ params } : { params: { id: string }}) {
         ← Back to Orders
       </Link>
 
-      <Card className="shadow-lg border border-border/40 bg-background">
+      <Card className="shadow-lg border-none bg-background">
         <CardHeader>
           <CardTitle className="text-xl font-semibold">
             Order #{String(order._id).slice(-6).toUpperCase()}
@@ -40,12 +40,12 @@ export default async function Page({ params } : { params: { id: string }}) {
               <p className="text-sm text-muted-foreground mb-1">Status</p>
               <p
                 className={`font-medium ${
-                  order.paymentStatus === "paid"
+                  order.status === "paid"
                     ? "text-green-600"
                     : "text-yellow-600"
                 }`}
               >
-                {order.paymentStatus.toUpperCase()}
+                {order.status.toUpperCase()}
               </p>
             </div>
 

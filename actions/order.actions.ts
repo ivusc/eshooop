@@ -2,10 +2,11 @@
 
 import { connectToDatabase } from "@/lib/mongodb";
 import Order from "@/models/Order";
+import { Types } from "mongoose";
 
 export async function getLastOrder(userId: string){
   await connectToDatabase();
-  const order = await Order.findOne({ user: userId, paymentStatus: "paid" })
+  const order = await Order.findOne({ user: userId, status: "paid" })
     .sort({ createdAt: -1 })
     .populate("items.product")
     .lean();
@@ -40,10 +41,27 @@ export async function getOrdersByUser(userId: string) {
 
 export async function getTotalOrders(userId: string) {
   await connectToDatabase();
-  
-  const totalOrders = await Order.countDocuments({ user: userId });
-  
-  if (!totalOrders) return { success: false, message: 'Orders not found.' }
 
-  return totalOrders;
+  const result = await Order.aggregate([
+    { $match: { user: new Types.ObjectId(userId) } },
+    {
+      $group: {
+        _id: "$user",
+        totalAmount: { $sum: "$total" },
+        orderCount: { $sum: 1 },
+      },
+    },
+  ]);
+
+  if (!result) return { success: false, message: 'Orders not found.' }
+
+  if (result.length === 0) {
+    return { total: 0, count: 0 };
+  }
+  
+  return {
+    total: result[0].totalAmount,
+    count: result[0].orderCount,
+    success: true
+  };
 }

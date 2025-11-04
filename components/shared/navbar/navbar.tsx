@@ -9,10 +9,16 @@ import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMe
 import { getTotalItemsInCart } from '@/actions/cart.actions'
 import { getTotalOrders } from '@/actions/order.actions'
 import { ISession } from '@/lib/types'
+import { IUser } from '@/models/User'
+import { getUser } from '@/actions/user.actions'
 
 
 export default async function Navbar() {
   const session : ISession = await getSession();
+
+  let user: IUser | null = null;
+
+  if (session) user = await getUser(session.email);
 
   let cartItemsTotal;
   let orderItemsTotal;
@@ -56,7 +62,7 @@ export default async function Navbar() {
             <div className='flex flex-row justify-between items-center space-x-4 hover:bg-accent p-2 rounded-md cursor-pointer'>
               <Link href='/profile' className='flex flex-row'>
                 <User />
-                <p>{session.username} ({orderItemsTotal?.toString()})</p>
+                <p>{user?.username} ({orderItemsTotal?.count.toString()})</p>
               </Link>
             </div>
             <LogoutForm />

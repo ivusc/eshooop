@@ -1,7 +1,7 @@
 import mongoose, { Schema, models, model } from "mongoose";
 
 export interface IProduct {
-  _id: mongoose.Types.ObjectId,
+  _id: mongoose.Types.ObjectId;
   name: string;
   description: string;
   price: number;
@@ -11,6 +11,8 @@ export interface IProduct {
   reviewCount: number;
   avgRating: number;
   discountedPrice: number;
+  newArrival: boolean;
+  bestSeller: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -26,6 +28,8 @@ export const ProductSchema = new Schema<IProduct>(
     reviewCount: { type: Number, default: 0 },
     avgRating: { type: Number, default: 5 },
     pictures: [{ type: String }],
+    newArrival: { type: Boolean, default: false },
+    bestSeller: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
@@ -33,4 +37,3 @@ export const ProductSchema = new Schema<IProduct>(
 const Product = models.Product || model("Product", ProductSchema);
 
 export default Product;
-

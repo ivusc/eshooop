@@ -7,7 +7,7 @@ export default async function EditProductPage({ params } : { params: { id: strin
   const { id } = await params;
   const product : IProduct = await getProduct(id);
 
-  console.log(product);
+  //console.log(product);
 
   const pictures = convertToPictureObjectArr(product.pictures)
 

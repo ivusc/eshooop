@@ -4,11 +4,11 @@ import { IUser } from "@/models/User";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import AddToCartButton from "./add-to-cart-button";
+import AddToCartButton from "@/app/products/_components/add-to-cart-button"
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import ProductRating from "./product-rating";
-import SaveButton from "./save-button";
+import ProductRating from "@/app/products/_components/product-rating";
+import SaveButton from "@/app/products/_components/save-button";
 
 export default function ProductCard({
   product,
@@ -63,7 +63,7 @@ export default function ProductCard({
               product={product}
               saved={
                 user.savedProducts.find(
-                  (id) => id.toString() === product._id.toString()
+                  (p) => p._id.toString() === product._id.toString()
                 )
                   ? true
                   : false

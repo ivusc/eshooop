@@ -54,7 +54,7 @@ export async function POST(req: Request) {
       user: userId,
       items: orderItems,
       total: cart.totalPrice,
-      paymentStatus: "paid",
+      status: "paid",
       stripeSessionId: session.id,
     });
 
