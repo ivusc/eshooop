@@ -58,7 +58,7 @@ export default async function ProductPage({
             <AddToCartButton user={user} product={product} />
             <SaveButton
               saved={
-                user!.savedProducts.find(
+                user?.savedProducts.find(
                   (id) => id.toString() === product._id.toString()
                 )
                   ? true

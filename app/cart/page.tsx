@@ -9,9 +9,9 @@ import { IUser } from "@/models/User";
 
 export default async function CartPage() {
   const session = await getSession();
+  if (!session) redirect('/');
+  
   const user : IUser = await getUser(session.email);
-
-  if (!user) redirect('/');
 
   const cart : ICart = await getCart(user._id.toString());
 

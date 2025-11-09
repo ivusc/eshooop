@@ -125,7 +125,7 @@ export default function EditProfileForm({ user } : { user:  IUser }) {
         />
         <div className="flex justify-center items-center">
           <Button type="submit" className="max-w-2xl">
-            Submit
+            Save Changes
           </Button>
         </div>
       </form>

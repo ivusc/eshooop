@@ -1,7 +1,9 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import React from 'react'
+import CreateAddressForm from './create-address-form'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function AddressList({ userData } : { userData: any}) {
@@ -42,12 +44,20 @@ export default function AddressList({ userData } : { userData: any}) {
           </CardContent>
         </Card>
       ))}
-      <Card className="bg-accent/70 backdrop-blur-sm  border-dashed hover:border-purple-500/50 transition-all cursor-pointer flex items-center justify-center min-h-[250px]">
-        <CardContent className="text-center">
-          <div className="text-6xl text-gray-600 mb-4">+</div>
-          <p className="text-gray-400">Add New Address</p>
-        </CardContent>
-      </Card>
+      <Dialog>
+        <DialogTrigger>
+          <Card className="bg-accent/70 backdrop-blur-sm  border-dashed hover:border-indigo-500/50 transition-all cursor-pointer flex items-center justify-center min-h-[250px]">
+            <CardContent className="text-center">
+              <div className="text-6xl text-gray-600 mb-4">+</div>
+              <p className="text-gray-400">Add New Address</p>
+            </CardContent>
+          </Card>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogTitle>Add New Address</DialogTitle>
+          <CreateAddressForm />
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

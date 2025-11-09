@@ -1,6 +1,5 @@
 import { getFullUserDetails } from "@/actions/user.actions";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getSession } from "@/actions/auth.actions";
 import { redirect } from "next/navigation";
@@ -8,15 +7,15 @@ import Link from "next/link";
 import { IUser } from "@/models/User";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
 import { getOrdersByUser, getTotalOrders } from "@/actions/order.actions";
 import { IOrder } from "@/models/Order";
-import OrderCard from "./_components/order-card";
+import OrderCard from "@/app/profile/_components/order-card";
 import { getReviewsByUser } from "@/actions/review.actions";
 import { IReview } from "@/models/Review";
-import SavedItems from "./_components/saved-items";
-import AddressList from "./_components/address-list";
+import SavedItems from "@/app/profile/_components/saved-items";
+import AddressList from "@/app/profile/_components/address/address-list";
 import { IProduct } from "@/models/Product";
+import UserStats from "@/app/profile/_components/user-stats";
 
 const userData = {
   profile: {
@@ -26,13 +25,13 @@ const userData = {
     avatar: "AT",
     joinDate: "January 2024",
     verified: true,
-    membershipTier: "Gold"
+    membershipTier: "Gold",
   },
   stats: {
     totalOrders: 47,
-    totalSpent: 3250.50,
+    totalSpent: 3250.5,
     savedItems: 23,
-    reviewsWritten: 12
+    reviewsWritten: 12,
   },
   addresses: [
     {
@@ -44,7 +43,7 @@ const userData = {
       state: "CA",
       zip: "94102",
       country: "United States",
-      isDefault: true
+      isDefault: true,
     },
     {
       id: 2,
@@ -55,50 +54,18 @@ const userData = {
       state: "CA",
       zip: "94105",
       country: "United States",
-      isDefault: false
-    }
-  ],
-  orders: [
-    {
-      id: "ORD-2024-1234",
-      date: "Nov 1, 2024",
-      status: "Delivered",
-      total: 199.99,
-      items: 2,
-      trackingNumber: "TRK123456789"
+      isDefault: false,
     },
-    {
-      id: "ORD-2024-1233",
-      date: "Oct 28, 2024",
-      status: "In Transit",
-      total: 89.99,
-      items: 1,
-      trackingNumber: "TRK987654321"
-    },
-    {
-      id: "ORD-2024-1232",
-      date: "Oct 15, 2024",
-      status: "Delivered",
-      total: 249.99,
-      items: 3,
-      trackingNumber: "TRK456789123"
-    }
-  ],
-  savedItems: [
-    { id: 1, name: "Smart Watch Ultra", price: 399.99, image: "⌚" },
-    { id: 2, name: "Wireless Earbuds", price: 149.99, image: "🎧" },
-    { id: 3, name: "Fitness Tracker", price: 79.99, image: "📱" }
   ]
 };
 
-
 export default async function ProfilePage() {
   const session = await getSession();
-  if (!session) redirect('/login');
+  if (!session) redirect("/login");
 
-  const user : IUser = await getFullUserDetails(session.email);
+  const user: IUser = await getFullUserDetails(session.email);
   const reviews: IReview[] = await getReviewsByUser(session.id);
-  const orders : IOrder[] = await getOrdersByUser(session.id);
+  const orders: IOrder[] = await getOrdersByUser(session.id);
   const ordersStats = await getTotalOrders(session.id);
 
   //console.log(user)
@@ -114,11 +81,15 @@ export default async function ProfilePage() {
   // };
 
   const getTierColor = (tier: string) => {
-    switch(tier) {
-      case 'Gold': return 'from-yellow-400 to-yellow-600';
-      case 'Silver': return 'from-gray-300 to-gray-500';
-      case 'Bronze': return 'from-orange-400 to-orange-600';
-      default: return 'from-indigo-400 to-purple-400';
+    switch (tier) {
+      case "Gold":
+        return "from-yellow-400 to-yellow-600";
+      case "Silver":
+        return "from-gray-300 to-gray-500";
+      case "Bronze":
+        return "from-orange-400 to-orange-600";
+      default:
+        return "from-indigo-400 to-purple-400";
     }
   };
 
@@ -132,7 +103,7 @@ export default async function ProfilePage() {
               {/* Avatar */}
               <div className="relative">
                 <div className="w-32 h-32 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-4xl font-bold">
-                  {user.username.slice(0,2)}
+                  {user.username.slice(0, 2)}
                 </div>
                 {userData.profile.verified && (
                   <div className="absolute bottom-0 right-0 w-10 h-10 bg-green-500 rounded-full flex items-center justify-center border-4 border-gray-800">
@@ -144,14 +115,22 @@ export default async function ProfilePage() {
               {/* Profile Info */}
               <div className="flex-1 text-center md:text-left">
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-3 mb-2">
-                  <h1 className="text-3xl font-bold text-white">{user.username}</h1>
-                  <Badge className={`bg-gradient-to-r ${getTierColor(userData.profile.membershipTier)} text-white border-0`}>
+                  <h1 className="text-3xl font-bold text-white">
+                    {user.username}
+                  </h1>
+                  <Badge
+                    className={`bg-gradient-to-r ${getTierColor(
+                      userData.profile.membershipTier
+                    )} text-white border-0`}
+                  >
                     {userData.profile.membershipTier} Member
                   </Badge>
                 </div>
                 <p className="text-gray-400 mb-1">{user.email}</p>
                 <p className="text-gray-400 mb-3">{user.phone}</p>
-                <p className="text-sm text-gray-500">Member since {new Date(user.createdAt).toLocaleString()}</p>
+                <p className="text-sm text-gray-500">
+                  Member since {new Date(user.createdAt).toLocaleString()}
+                </p>
               </div>
 
               {/* Edit Button */}
@@ -165,51 +144,44 @@ export default async function ProfilePage() {
               </Link>
             </div>
 
-            {/* Stats */}
-            <Separator className="bg-zinc-900 my-6" />
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="flex flex-col items-center">
-                <div className="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 w-fit bg-clip-text text-transparent">
-                  {ordersStats.count}
-                </div>
-                <div className="text-sm text-gray-400 mt-1">Total Orders</div>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 w-fit bg-clip-text text-transparent">
-                  ${ordersStats.total}
-                </div>
-                <div className="text-sm text-gray-400 mt-1">Total Spent</div>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 w-fit bg-clip-text text-transparent">
-                  {user.savedProducts.length}
-                </div>
-                <div className="text-sm text-gray-400 mt-1">Saved Items</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                  {reviews.length}
-                </div>
-                <div className="text-sm text-gray-400 mt-1">Reviews</div>
-              </div>
-            </div>
+            <UserStats
+              totalOrders={ordersStats.count}
+              totalSpent={ordersStats.total}
+              totalReviews={reviews.length}
+              totalSaved={user.savedProducts.length}
+            />
           </CardContent>
         </Card>
 
         {/* Tabs Section */}
         <Tabs defaultValue="orders" className="w-full">
           <TabsList className="bg-accent/70 border-none border  mb-6">
-            <TabsTrigger value="orders" className="data-[state=active]:bg-purple-600">Orders ({orders.length})</TabsTrigger>
-            <TabsTrigger value="addresses" className="data-[state=active]:bg-purple-600">Addresses</TabsTrigger>
-            <TabsTrigger value="saved" className="data-[state=active]:bg-purple-600">Saved Items ({user.savedProducts.length})</TabsTrigger>
-            <TabsTrigger value="settings" className="data-[state=active]:bg-purple-600">Settings</TabsTrigger>
+            <TabsTrigger
+              value="orders"
+              className="data-[state=active]:bg-purple-600"
+            >
+              Orders ({orders.length})
+            </TabsTrigger>
+            <TabsTrigger
+              value="addresses"
+              className="data-[state=active]:bg-purple-600"
+            >
+              Addresses
+            </TabsTrigger>
+            <TabsTrigger
+              value="saved"
+              className="data-[state=active]:bg-purple-600"
+            >
+              Saved Items ({user.savedProducts.length})
+            </TabsTrigger>
+            {/* <TabsTrigger value="settings" className="data-[state=active]:bg-purple-600">Settings</TabsTrigger> */}
           </TabsList>
 
           {/* Orders Tab */}
-          <TabsContent value="orders" id='orders'>
+          <TabsContent value="orders" id="orders">
             <div className="space-y-4">
               {orders.map((order) => (
-                <OrderCard order={order} key={order._id.toString()}/>
+                <OrderCard order={order} key={order._id.toString()} />
               ))}
             </div>
           </TabsContent>
@@ -221,11 +193,11 @@ export default async function ProfilePage() {
 
           {/* Saved Items Tab */}
           <TabsContent value="saved">
-            <SavedItems items={user.savedProducts as IProduct[]} user={user}/>
+            <SavedItems items={user.savedProducts as IProduct[]} user={user} />
           </TabsContent>
 
           {/* Settings Tab */}
-          <TabsContent value="settings">
+          {/* <TabsContent value="settings">
             <div className="space-y-6">
               <Card className="bg-accent/70 border-none backdrop-blur-sm ">
                 <CardHeader>
@@ -308,7 +280,7 @@ export default async function ProfilePage() {
                 </CardContent>
               </Card>
             </div>
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </div>
     </div>

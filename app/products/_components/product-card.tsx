@@ -56,7 +56,7 @@ export default function ProductCard({
         <p className="text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 w-fit bg-clip-text text-transparent">
           ${product.price.toFixed(2)}
         </p>
-        {user?.role && product.stock > 0 && (
+        {user && product.stock > 0 && (
           <div className="flex space-x-1">
             <SaveButton
               user={user}
