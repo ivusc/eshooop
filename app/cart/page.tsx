@@ -23,16 +23,16 @@ export default async function CartPage() {
     );
 
   return(
-    <main className="max-w-3xl mx-auto p-6 space-y-6">
-      <h1 className="text-3xl font-bold mb-4">Your Cart</h1>
+    <main className="max-w-3xl mx-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4">Your Cart</h1>
 
       {cart.items.map((item: ICartItem) => (
         <CartItem key={item.product._id.toString()} userId={cart.user.toString()} item={item} />
       ))}
 
-      <div className="p-4 px-12 mt-6 border-none flex flex-row justify-between items-center">
-        <p className="font-semibold text-2xl">Total</p>
-        <p className="font-semibold text-2xl">${cart.totalPrice.toFixed(2)}</p>
+      <div className="p-4 sm:px-6 md:px-12 mt-6 border-none flex flex-row justify-between items-center">
+        <p className="font-semibold text-xl sm:text-2xl">Total</p>
+        <p className="font-semibold text-xl sm:text-2xl">${cart.totalPrice.toFixed(2)}</p>
       </div>
 
       <CheckoutButton userId={user._id.toString()}/>

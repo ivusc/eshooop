@@ -27,16 +27,16 @@ export default async function SuccessPage() {
     );
 
   return (
-    <main className="min-h-[80vh] flex items-center justify-center p-6">
-      <div className="max-w-xl text-center space-y-4">
-        <h1 className="text-2xl font-bold mb-4">Payment successful 🎉</h1>
-        <p className="text-gray-600">Thanks for your purchase. Here is your order summary.</p>
+    <main className="min-h-[80vh] flex items-center justify-center p-4 sm:p-6">
+      <div className="max-w-xl text-center space-y-4 w-full">
+        <h1 className="text-xl sm:text-2xl font-bold mb-4">Payment successful 🎉</h1>
+        <p className="text-sm sm:text-base text-gray-600">Thanks for your purchase. Here is your order summary.</p>
         <Card className="shadow-lg border bg-background">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold">
+            <CardTitle className="text-base sm:text-lg font-semibold">
               Order #{String(order._id).slice(-6).toUpperCase()}
             </CardTitle>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Placed on {new Date(order.createdAt).toLocaleString()}
             </p>
           </CardHeader>
@@ -44,20 +44,20 @@ export default async function SuccessPage() {
           <CardContent>
             <div className="space-y-4">
               <div>
-                <p className="text-sm text-muted-foreground mb-2">Products</p>
+                <p className="text-xs sm:text-sm text-muted-foreground mb-2">Products</p>
                 <ul className="space-y-3">
                   {order.items.map((item: IOrderItem) => (
                     <li
                       key={item.product._id.toString()}
-                      className="flex justify-between items-start"
+                      className="flex flex-col sm:flex-row justify-between items-start sm:items-start gap-2"
                     >
                       <div className="flex flex-col items-start">
-                        <p className="font-medium text-base">{(item.product as IProduct).name}</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="font-medium text-sm sm:text-base">{(item.product as IProduct).name}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground">
                           {item.quantity} x ${item.price.toFixed(2)}
                         </p>
                       </div>
-                      <p className="font-semibold text-base">
+                      <p className="font-semibold text-sm sm:text-base">
                         ${(item.quantity * item.price).toFixed(2)}
                       </p>
                     </li>
@@ -67,14 +67,14 @@ export default async function SuccessPage() {
 
               <Separator />
 
-              <div className="flex justify-between font-semibold text-base">
+              <div className="flex justify-between font-semibold text-sm sm:text-base">
                 <span>Total</span>
                 <span>${order.total.toFixed(2)}</span>
               </div>
 
               <Separator />
 
-              <div className="flex justify-between text-sm text-muted-foreground">
+              <div className="flex justify-between text-xs sm:text-sm text-muted-foreground">
                 <span>Status:</span>
                 <span className="text-green-600 font-medium">PAID</span>
               </div>
@@ -82,8 +82,8 @@ export default async function SuccessPage() {
           </CardContent>
         </Card>
 
-        <Link href='/'>
-          <Button>Return Home <Home /></Button>
+        <Link href='/' className="inline-block">
+          <Button className="w-full sm:w-auto">Return Home <Home /></Button>
         </Link>
       </div>
     </main>

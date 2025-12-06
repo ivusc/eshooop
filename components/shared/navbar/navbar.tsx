@@ -1,5 +1,5 @@
 import { getSession } from '@/actions/auth.actions'
-import { ShoppingBag, User } from 'lucide-react'
+import { ShoppingBag, User, Menu, X } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { Button } from '../../ui/button'
@@ -11,6 +11,7 @@ import { getTotalOrders } from '@/actions/order.actions'
 import { ISession } from '@/lib/types'
 import { IUser } from '@/models/User'
 import { getUser } from '@/actions/user.actions'
+import MobileNav from './mobile-nav'
 
 
 export default async function Navbar() {
@@ -20,11 +21,16 @@ export default async function Navbar() {
 
   if (session) user = await getUser(session.email);
 
-  let cartItemsTotal;
-  let orderItemsTotal;
+  let cartItemsTotal: number | undefined;
+  let orderItemsTotal: { count: number } | undefined;
   if (session?.id) {
-    cartItemsTotal = await getTotalItemsInCart(session.id);
-    orderItemsTotal = await getTotalOrders(session.id);
+    const cartResult = await getTotalItemsInCart(session.id);
+    cartItemsTotal = typeof cartResult === 'number' ? cartResult : undefined;
+    
+    const orderResult = await getTotalOrders(session.id);
+    if (orderResult && 'count' in orderResult) {
+      orderItemsTotal = { count: orderResult.count };
+    }
   }
 
   return (
@@ -57,12 +63,12 @@ export default async function Navbar() {
         {session !== null ? (
           <>
             <Link href='/cart' className='flex flex-row items-center justify-center space-x-4 hover:bg-accent rounded-md px-4 py-2'>
-              <p className='font-medium'>Cart 🛒 ({cartItemsTotal?.toString()})</p>
+              <p className='font-medium'>Cart 🛒 ({cartItemsTotal?.toString() || 0})</p>
             </Link>
             <div className='flex flex-row justify-between items-center space-x-4 hover:bg-accent p-2 rounded-md cursor-pointer'>
               <Link href='/profile' className='flex flex-row'>
                 <User />
-                <p>{user?.username} ({orderItemsTotal?.count.toString()})</p>
+                <p>{user?.username} ({orderItemsTotal?.count.toString() || 0})</p>
               </Link>
             </div>
             <LogoutForm />
@@ -74,6 +80,12 @@ export default async function Navbar() {
           )
         }
       </div>
+      <MobileNav 
+        session={session} 
+        user={user} 
+        cartItemsTotal={cartItemsTotal} 
+        orderItemsTotal={orderItemsTotal} 
+      />
     </nav>
   )
 }

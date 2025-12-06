@@ -97,9 +97,13 @@ export async function saveProduct(userId: string, productId: string) {
 // Add an address
 export async function addAddress(userId: string, address: IAddress) {
   await connectToDatabase();
-  await User.findByIdAndUpdate(
+  //console.log(address, userId)
+  const user = await User.findByIdAndUpdate(
     userId,
-    { $push: { addresses: address } },
+    { $push: { address } },
     { new: true }
   );
+  await user
+  //console.log(user)
+  return { success: true, message: "Address Added" };
 }

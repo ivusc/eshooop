@@ -8,9 +8,9 @@ export default function TestimonialMarquee() {
   const secondRow = testimonials.reviews.slice(2, 4);
 
   return (
-    <section className="py-16 px-6 overflow-hidden">
+    <section className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-white mb-8 sm:mb-12">
           {testimonials.title}
         </h2>
         

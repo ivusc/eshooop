@@ -67,6 +67,7 @@ export default async function ProfilePage() {
   const reviews: IReview[] = await getReviewsByUser(session.id);
   const orders: IOrder[] = await getOrdersByUser(session.id);
   const ordersStats = await getTotalOrders(session.id);
+  console.log(user._id)
 
   //console.log(user)
 
@@ -95,49 +96,49 @@ export default async function ProfilePage() {
 
   return (
     <div className="min-h-screen">
-      <div className="2xl:max-w-4xl xl:max-w-5xl mx-auto px-6 py-8">
+      <div className="2xl:max-w-4xl xl:max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Profile Header */}
-        <Card className="bg-accent/70 backdrop-blur-sm border-none mb-8">
-          <CardContent className="p-8">
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+        <Card className="bg-accent/70 backdrop-blur-sm border-none mb-6 sm:mb-8">
+          <CardContent className="p-4 sm:p-6 md:p-8">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-4 sm:gap-6">
               {/* Avatar */}
               <div className="relative">
-                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-4xl font-bold">
+                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-2xl sm:text-4xl font-bold">
                   {user.username.slice(0, 2)}
                 </div>
                 {userData.profile.verified && (
-                  <div className="absolute bottom-0 right-0 w-10 h-10 bg-green-500 rounded-full flex items-center justify-center border-4 border-gray-800">
-                    <span className="text-white text-lg">✓</span>
+                  <div className="absolute bottom-0 right-0 w-8 h-8 sm:w-10 sm:h-10 bg-green-500 rounded-full flex items-center justify-center border-2 sm:border-4 border-gray-800">
+                    <span className="text-white text-sm sm:text-lg">✓</span>
                   </div>
                 )}
               </div>
 
               {/* Profile Info */}
               <div className="flex-1 text-center md:text-left">
-                <div className="flex flex-col md:flex-row items-center md:items-start gap-3 mb-2">
-                  <h1 className="text-3xl font-bold text-white">
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-2 sm:gap-3 mb-2">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-white">
                     {user.username}
                   </h1>
                   <Badge
                     className={`bg-gradient-to-r ${getTierColor(
                       userData.profile.membershipTier
-                    )} text-white border-0`}
+                    )} text-white border-0 text-xs sm:text-sm`}
                   >
                     {userData.profile.membershipTier} Member
                   </Badge>
                 </div>
-                <p className="text-gray-400 mb-1">{user.email}</p>
-                <p className="text-gray-400 mb-3">{user.phone}</p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm sm:text-base text-gray-400 mb-1 break-all">{user.email}</p>
+                <p className="text-sm sm:text-base text-gray-400 mb-3">{user.phone}</p>
+                <p className="text-xs sm:text-sm text-gray-500">
                   Member since {new Date(user.createdAt).toLocaleString()}
                 </p>
               </div>
 
               {/* Edit Button */}
-              <Link href={`/profile/edit`}>
+              <Link href={`/profile/edit`} className="w-full md:w-auto">
                 <Button
                   variant="outline"
-                  className=" text-white hover:bg-accent"
+                  className="w-full md:w-auto text-white hover:bg-accent"
                 >
                   Edit Profile
                 </Button>
@@ -155,22 +156,22 @@ export default async function ProfilePage() {
 
         {/* Tabs Section */}
         <Tabs defaultValue="orders" className="w-full">
-          <TabsList className="bg-accent/70 border-none border  mb-6">
+          <TabsList className="bg-accent/70 border-none border mb-4 sm:mb-6 w-full overflow-x-auto">
             <TabsTrigger
               value="orders"
-              className="data-[state=active]:bg-purple-600"
+              className="data-[state=active]:bg-purple-600 text-xs sm:text-sm"
             >
               Orders ({orders.length})
             </TabsTrigger>
             <TabsTrigger
               value="addresses"
-              className="data-[state=active]:bg-purple-600"
+              className="data-[state=active]:bg-purple-600 text-xs sm:text-sm"
             >
               Addresses
             </TabsTrigger>
             <TabsTrigger
               value="saved"
-              className="data-[state=active]:bg-purple-600"
+              className="data-[state=active]:bg-purple-600 text-xs sm:text-sm"
             >
               Saved Items ({user.savedProducts.length})
             </TabsTrigger>
@@ -188,7 +189,7 @@ export default async function ProfilePage() {
 
           {/* Addresses Tab */}
           <TabsContent value="addresses">
-            <AddressList userData={userData} />
+            <AddressList userAddress={user.address} userId={user._id.toString()}/>
           </TabsContent>
 
           {/* Saved Items Tab */}

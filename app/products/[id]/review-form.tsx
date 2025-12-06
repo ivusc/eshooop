@@ -50,7 +50,7 @@ export default function ReviewForm({ userId, productId } : { userId: string, pro
   return (
     <Form {...createReviewForm}>
       <form onSubmit={createReviewForm.handleSubmit(onSubmit)} className="space-y-4">
-        <h3 className='font-semibold text-xl'>Leave a Review</h3>
+        <h3 className='font-semibold text-lg sm:text-xl'>Leave a Review</h3>
         <FormField
           control={createReviewForm.control}
           name="rating"
@@ -62,8 +62,8 @@ export default function ReviewForm({ userId, productId } : { userId: string, pro
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star
                       key={star}
-                      size={28}
-                      className={`cursor-pointer transition-colors ${
+                      size={24}
+                      className={`cursor-pointer transition-colors sm:w-7 sm:h-7 ${
                         (hovered ?? Number(createReviewForm.watch("rating"))) >= star
                           ? "fill-yellow-400 text-yellow-400"
                           : "text-gray-300"
@@ -87,13 +87,13 @@ export default function ReviewForm({ userId, productId } : { userId: string, pro
             <FormItem>
               <FormLabel>Comments</FormLabel>
               <FormControl>
-                <Textarea placeholder="How is the product?" className='w-4xl' {...field} />
+                <Textarea placeholder="How is the product?" className='w-full' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit Review</Button>
+        <Button type="submit" className="w-full sm:w-auto">Submit Review</Button>
       </form>
     </Form>
   )

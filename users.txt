@@ -8,14 +8,14 @@ test1234
 
 Functions:
 Users
-- create
-- register
-- updater
+- create [done]
+- register [done]
+- updater [done]
 
 Reviews:
-- Add
+- Add [done]
 - Update
-- View
+- View [done]
 - Remove
 
 Admin:
