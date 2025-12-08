@@ -16,6 +16,8 @@ import SavedItems from "@/app/profile/_components/saved-items";
 import AddressList from "@/app/profile/_components/address/address-list";
 import { IProduct } from "@/models/Product";
 import UserStats from "@/app/profile/_components/user-stats";
+import { getAddresses } from "@/actions/address.actions";
+import { IAddress } from "@/models/Address";
 
 const userData = {
   profile: {
@@ -64,6 +66,8 @@ export default async function ProfilePage() {
   if (!session) redirect("/login");
 
   const user: IUser = await getFullUserDetails(session.email);
+  const addresses: IAddress[] = await getAddresses(session.id);
+  console.log(addresses)
   const reviews: IReview[] = await getReviewsByUser(session.id);
   const orders: IOrder[] = await getOrdersByUser(session.id);
   const ordersStats = await getTotalOrders(session.id);
@@ -189,7 +193,7 @@ export default async function ProfilePage() {
 
           {/* Addresses Tab */}
           <TabsContent value="addresses">
-            <AddressList userAddress={user.address} userId={user._id.toString()}/>
+            <AddressList userAddress={addresses} userId={user._id.toString()}/>
           </TabsContent>
 
           {/* Saved Items Tab */}

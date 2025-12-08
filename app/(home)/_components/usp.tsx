@@ -12,7 +12,7 @@ export default function USP() {
           {landingPageData.usp.title}
         </h2>
         <div className="w-full space-y-4">
-          <div className="grid grid-cols-2 gap-4 max-w-5xl w-full mx-auto">
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-4 max-w-5xl w-full mx-auto">
             {landingPageData.usp.items.map((item, index) => (
               <Card
                 key={index}

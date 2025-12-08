@@ -1,6 +1,6 @@
 import React from 'react'
 import { landingPageData } from '@/lib/constants'
-import aboutImage from '@/public/images/about.png'
+import aboutImage from '@/public/images/about.svg'
 import Image from 'next/image'
 
 export default function About() {

@@ -1,36 +1,136 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Eshooop - E-Commerce Platform
+
+A modern, full-stack e-commerce platform built with Next.js, TypeScript, and MongoDB.
+
+## Features
+
+- **User Authentication** - Secure user registration and login
+- **Product Catalog** - Browse and search products with filtering
+- **Shopping Cart** - Add/remove items with real-time updates
+- **Order Management** - Track orders and order history
+- **Address Management** - Save and manage multiple delivery addresses
+- **Product Reviews** - Leave ratings and reviews on products
+- **User Profiles** - Manage account settings and preferences
+- **Responsive Design** - Mobile-friendly interface
+
+## Tech Stack
+
+- **Frontend:** Next.js 14, React, TypeScript, Tailwind CSS
+- **Backend:** Next.js App Router, Server Actions
+- **Database:** MongoDB with Mongoose
+- **UI Components:** Custom shadcn/ui components
+- **Notifications:** Sonner (Toast notifications)
+- **Icons:** Lucide React
+
+## Project Structure
+
+```
+eshooop/
+├── app/
+│   ├── profile/           # User profile pages
+│   │   └── _components/   # Profile sub-components
+│   ├── products/          # Product pages
+│   ├── cart/              # Shopping cart
+│   └── actions/           # Server actions
+├── components/            # Reusable UI components
+├── models/                # MongoDB schemas
+├── lib/                   # Utility functions
+└── public/                # Static assets
+```
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 18+
+- MongoDB instance
+- npm or yarn
 
+### Installation
+
+1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd eshooop
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables
+```bash
+cp .env.example .env.local
+# Add your MongoDB connection string and other config
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Run the development server
+```bash
+npm run dev
+```
 
-## Learn More
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-To learn more about Next.js, take a look at the following resources:
+## Available Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Key Features
 
-## Deploy on Vercel
+### Address Management
+- Add multiple delivery addresses
+- Set default address
+- Edit and delete addresses
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Product Reviews
+- Rate products (1-5 stars)
+- Leave detailed comments
+- Edit and delete your reviews
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Shopping Cart
+- Add/remove items
+- Real-time quantity updates
+- Persistent cart state
+
+### Order Tracking
+- View order history
+- Track order status
+- Download invoices
+
+## API Routes
+
+### Address Actions
+- `POST /api/address` - Create new address
+- `PUT /api/address/:id` - Update address
+- `DELETE /api/address/:id` - Delete address
+
+### Review Actions
+- `POST /api/reviews` - Create review
+- `PUT /api/reviews/:id` - Edit review
+- `DELETE /api/reviews/:id` - Delete review
+
+## Database Models
+
+- **User** - User account information
+- **Product** - Product details and inventory
+- **Review** - Product reviews and ratings
+- **Address** - User delivery addresses
+- **Order** - Order information and status
+
+## Contributing
+
+1. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+2. Commit your changes (`git commit -m 'Add AmazingFeature'`)
+3. Push to the branch (`git push origin feature/AmazingFeature`)
+4. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Support
+
+For support, email ivuschua.code@gmail.com or open an issue on GitHub.

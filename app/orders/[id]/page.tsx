@@ -5,6 +5,7 @@ import { Separator } from '@/components/ui/separator';
 import { ISession } from '@/lib/types';
 import { IOrderItem } from '@/models/Order';
 import { IProduct } from '@/models/Product';
+import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react'
@@ -59,11 +60,14 @@ export default async function Page({ params } : { params: { id: string }}) {
                     key={i}
                     className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2"
                   >
-                    <div>
-                      <p className="font-medium text-sm sm:text-base">{(item.product as IProduct).name}</p>
-                      <p className="text-xs sm:text-sm text-muted-foreground">
-                        {item.quantity} x ${item.price.toFixed(2)}
-                      </p>
+                    <div className='flex space-x-4'>
+                      <Image src={(item.product as IProduct).pictures[0]} width={48} height={48} className='bg-zinc-100/90 rounded-lg p-1 w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0' alt={(item.product as IProduct).name} />
+                      <div className="flex flex-col">
+                        <p className="font-medium text-sm sm:text-base">{(item.product as IProduct).name}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground">
+                          {item.quantity} x ${item.price.toFixed(2)}
+                        </p>
+                      </div>
                     </div>
                     <p className="font-semibold text-sm sm:text-base">
                       ${(item.price * item.quantity).toFixed(2)}

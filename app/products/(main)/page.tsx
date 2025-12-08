@@ -1,7 +1,7 @@
 import { getSession } from '@/actions/auth.actions';
 import { getProducts } from '@/actions/product.action';
 import { getUser } from '@/actions/user.actions';
-import ProductsPage from '@/app/products/_components/products-page';
+import ProductsPage from '../_components/products-page';
 import { IProduct } from '@/models/Product';
 import { IUser } from '@/models/User';
 import React, { Suspense } from 'react'

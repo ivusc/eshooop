@@ -3,10 +3,15 @@ import { motion } from "motion/react";
 import { HeroHighlight, Highlight } from "@/components/ui/hero-highlight";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import heroImage from "@/public/images/hero.svg"
 
 export function Hero() {
   return (
-    <HeroHighlight>
+    <HeroHighlight className="space-y-4">
+      <div className="justify-center flex items-center">
+        <Image src={heroImage} width={400} height={200} alt='hero image' className="select-none pointer-events-none"/>
+      </div>
       <motion.h1
         initial={{
           opacity: 0,
@@ -20,13 +25,10 @@ export function Hero() {
           duration: 0.5,
           ease: [0.4, 0.0, 0.2, 1],
         }}
-        className="text-xl sm:text-2xl md:text-3xl px-4 font-bold text-neutral-700 dark:text-white max-w-5xl leading-relaxed lg:leading-snug text-center mx-auto "
+        className="text-lg sm:text-2xl md:text-3xl px-4 font-semibold text-neutral-700 dark:text-white max-w-5xl leading-relaxed lg:leading-snug text-center mx-auto "
       >
         Discover millions of products from trusted sellers worldwide.<br/>
-        Get the
-        <Highlight className="text-black dark:text-white">best deals</Highlight>,&nbsp;
-        <Highlight className="text-black dark:text-white">fastest shipping</Highlight>,&nbsp;and<br/>&nbsp;
-        <Highlight className="text-black dark:text-white">premium quality</Highlight><br/>
+        Get the best deals, fastest shipping and premium quality
         all in one place.
       </motion.h1>
       <motion.div 

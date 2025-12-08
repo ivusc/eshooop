@@ -38,17 +38,17 @@ export default function OrderCard({ order } : { order: IOrder }) {
           ))}
         </ul>
       </div>
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end space-y-2 mt-3 sm:mt-2">
+      <div className="flex flex-col sm:flex-row justify-center items-end sm:items-end space-y-2 mt-3 sm:mt-2">
         <div className="text-base sm:text-lg font-bold w-full flex justify-between">
           <span className='bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text w-fit text-transparent'>Total</span>
           <span className='bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text w-fit text-transparent'>${order.total.toFixed(2)}</span>
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
-          {order.status === 'paid' && (
+          {/* {order.status === 'paid' && (
             <Button size="sm" className="w-full sm:w-auto">
               Buy Again
             </Button>
-          )}
+          )} */}
         </div>
       </div>
       </Link>

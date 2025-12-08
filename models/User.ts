@@ -1,17 +1,6 @@
 import mongoose, { Schema, models, model } from "mongoose";
 import { IProduct } from "./Product";
-
-export interface IAddress {
-  label?: string; // e.g. Home, Office
-  fullName: string;
-  phoneNumber: string;
-  street: string;
-  city: string;
-  state?: string;
-  postalCode: string;
-  country: string;
-  isDefault?: boolean;
-}
+import { IAddress } from "./Address";
 
 export interface IUser {
   _id: mongoose.Types.ObjectId;
@@ -22,26 +11,11 @@ export interface IUser {
   isVerified: boolean;
   picture: string;
   savedProducts: IProduct[] | mongoose.Types.ObjectId[];
-  address: IAddress[];
+  address: IAddress[] | mongoose.Types.ObjectId[];
   phone: number;
   createdAt: Date;
   updatedAt: Date;
 }
-
-const AddressSchema = new Schema(
-  {
-    label: { type: String, default: "Home" }, // e.g. Home, Office
-    fullName: { type: String, required: true },
-    phoneNumber: { type: String, required: true },
-    street: { type: String, required: true },
-    city: { type: String, required: true },
-    state: { type: String },
-    postalCode: { type: String, required: true },
-    country: { type: String, required: true },
-    isDefault: { type: Boolean, default: false },
-  },
-  { _id: false } // prevent separate ObjectIds for each address
-);
 
 const UserSchema = new Schema(
   {
@@ -53,7 +27,9 @@ const UserSchema = new Schema(
     isVerified: { type: Boolean, default: false },
     picture: { type: String },
     phone: { type: Number, default: 0 },
-    address: { type: [AddressSchema], default: [] },
+    address: [
+      { type: Schema.Types.ObjectId, ref: "Address", default: [] },
+    ],
     savedProducts: [
       { type: Schema.Types.ObjectId, ref: "Product", default: [] },
     ],

@@ -1,5 +1,5 @@
 "use client";
-import { addAddress } from "@/actions/address.actions";
+import { editAddress } from "@/actions/address.actions";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,14 +10,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { IAddress } from "@/models/Address";
 import { zodResolver } from "@hookform/resolvers/zod";
+import mongoose from "mongoose";
 import { useRouter } from "next/navigation";
-import React, { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 
-const createAddressSchema = z.object({
+const editAddressSchema = z.object({
   label: z.string().min(2, { message: "Label must be at least 5 characters." }),
   fullName: z.string().min(5, {
     message: "Name must be at least 5 characters.",
@@ -43,32 +44,34 @@ const createAddressSchema = z.object({
   isDefault: z.boolean(),
 });
 
-export default function CreateAddressForm({
+export default function EditAddressForm({
   userId,
-  setOpen,
+  handleClose,
+  address,
 }: {
   userId: string;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  handleClose: () => void
+  address: IAddress;
 }) {
   const router = useRouter();
-  const createAddressForm = useForm<z.infer<typeof createAddressSchema>>({
-    resolver: zodResolver(createAddressSchema),
+  const editAddressForm = useForm<z.infer<typeof editAddressSchema>>({
+    resolver: zodResolver(editAddressSchema),
     defaultValues: {
-      label: "",
-      fullName: "",
-      phoneNumber: "",
-      street: "",
-      city: "",
-      state: "",
-      postalCode: "",
-      country: "",
-      isDefault: false,
+      label: address.label || "",
+      fullName: address.fullName || "",
+      phoneNumber: address.phoneNumber || "",
+      street: address.street || "",
+      city: address.city || "",
+      state: address.state || "",
+      postalCode: address.postalCode || "",
+      country: address.country || "",
+      isDefault: address.isDefault || false,
     },
   });
 
-  async function onSubmit(values: z.infer<typeof createAddressSchema>) {
+  async function onSubmit(values: z.infer<typeof editAddressSchema>) {
     console.log(values);
-    const res = await addAddress(userId, {
+    const res = await editAddress(address._id.toString(), {
       city: values.city,
       country: values.country,
       fullName: values.fullName,
@@ -82,21 +85,21 @@ export default function CreateAddressForm({
     if (res.success) {
       toast.success(res.message);
       router.push("/profile");
-      createAddressForm.reset();
-      setOpen(false);
+      editAddressForm.reset();
+      handleClose();
     } else {
       toast.error(res.message);
     }
   }
 
   return (
-    <Form {...createAddressForm}>
+    <Form {...editAddressForm}>
       <form
-        onSubmit={createAddressForm.handleSubmit(onSubmit)}
+        onSubmit={editAddressForm.handleSubmit(onSubmit)}
         className="space-y-6 m-2"
       >
         <FormField
-          control={createAddressForm.control}
+          control={editAddressForm.control}
           name="label"
           render={({ field }) => (
             <FormItem>
@@ -109,7 +112,7 @@ export default function CreateAddressForm({
           )}
         />
         <FormField
-          control={createAddressForm.control}
+          control={editAddressForm.control}
           name="fullName"
           render={({ field }) => (
             <FormItem>
@@ -122,7 +125,7 @@ export default function CreateAddressForm({
           )}
         />
         <FormField
-          control={createAddressForm.control}
+          control={editAddressForm.control}
           name="phoneNumber"
           render={({ field }) => (
             <FormItem>
@@ -140,7 +143,7 @@ export default function CreateAddressForm({
         />
         <div className="grid grid-cols-2 w-full gap-6">
           <FormField
-            control={createAddressForm.control}
+            control={editAddressForm.control}
             name="city"
             render={({ field }) => (
               <FormItem>
@@ -153,7 +156,7 @@ export default function CreateAddressForm({
             )}
           />
           <FormField
-            control={createAddressForm.control}
+            control={editAddressForm.control}
             name="state"
             render={({ field }) => (
               <FormItem>
@@ -168,7 +171,7 @@ export default function CreateAddressForm({
         </div>
         <div className="grid grid-cols-2 w-full gap-6">
           <FormField
-            control={createAddressForm.control}
+            control={editAddressForm.control}
             name="postalCode"
             render={({ field }) => (
               <FormItem>
@@ -185,7 +188,7 @@ export default function CreateAddressForm({
             )}
           />
           <FormField
-            control={createAddressForm.control}
+            control={editAddressForm.control}
             name="country"
             render={({ field }) => (
               <FormItem>
@@ -199,7 +202,7 @@ export default function CreateAddressForm({
           />
         </div>
         <FormField
-          control={createAddressForm.control}
+          control={editAddressForm.control}
           name="street"
           render={({ field }) => (
             <FormItem>

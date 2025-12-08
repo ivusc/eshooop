@@ -5,14 +5,15 @@ import { IProduct } from "@/models/Product";
 import { IUser } from "@/models/User";
 import Image from "next/image";
 import AddToCartButton from "../_components/add-to-cart-button";
-import ReviewList from "./review-list";
+import ReviewList from "./_components/review-list";
 import { getReviews } from "@/actions/review.actions";
 import { IReview } from "@/models/Review";
-import ReviewForm from "./review-form";
+import ReviewForm from "./_components/review-form";
 import ProductRating from "../_components/product-rating";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import SaveButton from "../_components/save-button";
+import TrustBadges from "./_components/trust-badges";
 
 export default async function ProductPage({
   params,
@@ -23,6 +24,7 @@ export default async function ProductPage({
   const product: IProduct = await getProduct(id);
   const reviews: IReview[] = await getReviews(product._id.toString());
   const session = await getSession();
+  
   let user: IUser | null = null;
   if (session) user = await getUser(session?.email);
 
@@ -111,20 +113,7 @@ export default async function ProductPage({
         </div>
 
         {/* Trust Badges */}
-        <div className="grid grid-cols-3 gap-3 sm:gap-4">
-          <Card className="text-center border-none bg-accent/70 hover:bg-accent p-3 sm:p-4 transition-colors">
-            <div className="text-2xl sm:text-3xl mb-2">🔒</div>
-            <p className="text-xs sm:text-sm text-muted-foreground">Secure Payment</p>
-          </Card>
-          <Card className="text-center border-none bg-accent/70 hover:bg-accent p-3 sm:p-4 transition-colors">
-            <div className="text-2xl sm:text-3xl mb-2">↩️</div>
-            <p className="text-xs sm:text-sm text-muted-foreground">Easy Returns</p>
-          </Card>
-          <Card className="text-center border-none bg-accent/70 hover:bg-accent p-3 sm:p-4 transition-colors">
-            <div className="text-2xl sm:text-3xl mb-2">✓</div>
-            <p className="text-xs sm:text-sm text-muted-foreground">Quality Guarantee</p>
-          </Card>
-        </div>
+        <TrustBadges />
 
         {/* Review Form */}
         {user && (
@@ -138,7 +127,7 @@ export default async function ProductPage({
 
         {/* Review List */}
         <div className="pt-4 sm:pt-6 border-t">
-          <ReviewList reviews={reviews} />
+          <ReviewList reviews={reviews} userId={user?._id.toString()}/>
         </div>
       </div>
     </main>

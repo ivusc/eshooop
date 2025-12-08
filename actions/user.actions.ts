@@ -1,7 +1,7 @@
 "use server";
 
 import { connectToDatabase } from "@/lib/mongodb";
-import User, { IAddress } from "@/models/User";
+import User from "@/models/User";
 import { Types } from "mongoose";
 
 export async function getUsers() {
@@ -94,16 +94,3 @@ export async function saveProduct(userId: string, productId: string) {
   }
 }
 
-// Add an address
-export async function addAddress(userId: string, address: IAddress) {
-  await connectToDatabase();
-  //console.log(address, userId)
-  const user = await User.findByIdAndUpdate(
-    userId,
-    { $push: { address } },
-    { new: true }
-  );
-  await user
-  //console.log(user)
-  return { success: true, message: "Address Added" };
-}

@@ -1,5 +1,5 @@
 import { getSession } from '@/actions/auth.actions'
-import { ShoppingBag, User, Menu, X } from 'lucide-react'
+import { ShoppingBag, User, Menu, X, Lock } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { Button } from '../../ui/button'
@@ -34,7 +34,7 @@ export default async function Navbar() {
   }
 
   return (
-    <nav className="flex flex-row justify-between items-center md:px-12 px-4 bg-opacity-50 py-4 top-0 sticky backdrop-blur-lg h-[10vh] z-20 w-full">
+    <nav className="flex flex-row justify-between items-center md:px-12 px-4 bg-opacity-50 py-4 top-0 sticky backdrop-blur-lg h-[10vh] z-50 w-full">
       <Link href="/" className='flex flex-row justify-center items-center space-x-4'>
         <p className="font-bold text-lg flex"><ShoppingBag />&nbsp;eShooop</p>
       </Link>
@@ -71,6 +71,12 @@ export default async function Navbar() {
                 <p>{user?.username} ({orderItemsTotal?.count.toString() || 0})</p>
               </Link>
             </div>
+            {user && user.role == 'Seller' && <div className='flex flex-row justify-between items-center space-x-4 hover:bg-accent p-2 rounded-md cursor-pointer'>
+              <Link href='/admin' className='flex flex-row'>
+                <Lock />
+                <p>Admin</p>
+              </Link>
+            </div>}
             <LogoutForm />
           </>
           ) : (
