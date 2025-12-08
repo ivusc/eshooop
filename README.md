@@ -1,4 +1,6 @@
-# Eshooop - E-Commerce Platform
+# eshooop: E-Commerce Platform
+
+![Thumbnail Image](/public/images/preview.png)
 
 A modern, full-stack e-commerce platform built with Next.js, TypeScript, and MongoDB.
 
